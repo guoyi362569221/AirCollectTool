@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDataSys", "MonitorDataSys\MonitorDataSys.csproj", "{EAC48064-A249-4A45-9F83-CB9818E261B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.Hzexe.Air.OpenAirLibrary", "Com.Hzexe.Air.OpenAirLibrary\Com.Hzexe.Air.OpenAirLibrary.csproj", "{03546B0C-B08F-4846-B87D-90679AE94A94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EAC48064-A249-4A45-9F83-CB9818E261B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC48064-A249-4A45-9F83-CB9818E261B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC48064-A249-4A45-9F83-CB9818E261B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC48064-A249-4A45-9F83-CB9818E261B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03546B0C-B08F-4846-B87D-90679AE94A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03546B0C-B08F-4846-B87D-90679AE94A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03546B0C-B08F-4846-B87D-90679AE94A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03546B0C-B08F-4846-B87D-90679AE94A94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C75A163-479E-4D5E-ABB9-0F40D049027D}
+	EndGlobalSection
+EndGlobal

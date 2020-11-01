@@ -21,6 +21,7 @@ namespace MonitorDataSys
         private FrDataCollect frDataCollect = new FrDataCollect();
         private FrLookLog frLookLog = new FrLookLog();
         private FrAboutAs frAboutAs = new FrAboutAs();
+        private FrHistoryDataCollect frHistoryDataCollect = new FrHistoryDataCollect();
 
         private readonly LogRepository lr = new LogRepository();
 
@@ -30,7 +31,7 @@ namespace MonitorDataSys
 
             try
             {
-                Form[] forms = { frDataSourceConfig, frDataConfig, frDataCollect, frLookLog, frAboutAs };
+                Form[] forms = { frDataSourceConfig, frDataConfig, frDataCollect, frLookLog, frAboutAs, frHistoryDataCollect };
                 for (int i = 0; i < forms.Length; i++)
                 {
                     forms[i].TopLevel = false;
@@ -173,6 +174,7 @@ namespace MonitorDataSys
                         dataCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         lookLogBtn.BackColor = Color.FromArgb(240, 240, 240);
                         aboutUsBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        historyCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         break;
                     case "dataConfigBtn":
                         dataSourceConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
@@ -180,6 +182,7 @@ namespace MonitorDataSys
                         dataCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         lookLogBtn.BackColor = Color.FromArgb(240, 240, 240);
                         aboutUsBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        historyCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         break;
                     case "dataCollectBtn":
                         dataSourceConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
@@ -187,6 +190,15 @@ namespace MonitorDataSys
                         dataConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
                         lookLogBtn.BackColor = Color.FromArgb(240, 240, 240);
                         aboutUsBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        historyCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        break;
+                    case "historyCollectBtn":
+                        dataSourceConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        dataCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        dataConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        lookLogBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        aboutUsBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        historyCollectBtn.BackColor = Color.FromArgb(191, 205, 219);
                         break;
                     case "lookLogBtn":
                         dataSourceConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
@@ -194,6 +206,7 @@ namespace MonitorDataSys
                         dataConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
                         dataCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         aboutUsBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        historyCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         break;
                     case "aboutUsBtn":
                         dataSourceConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
@@ -201,6 +214,7 @@ namespace MonitorDataSys
                         dataConfigBtn.BackColor = Color.FromArgb(240, 240, 240);
                         dataCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         lookLogBtn.BackColor = Color.FromArgb(240, 240, 240);
+                        historyCollectBtn.BackColor = Color.FromArgb(240, 240, 240);
                         break;
 
                 }
@@ -352,8 +366,22 @@ namespace MonitorDataSys
                 lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
             }
         }
+
         #endregion
 
-
+        private void historyCollectBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                setMenuStyle("historyCollectBtn");
+                setTabContentShow(frHistoryDataCollect);
+            }
+            catch (Exception ex)
+            {
+                //日志处理
+                Loghelper.WriteErrorLog("捕获异常信息", ex);
+                lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
+            }
+        }
     }
 }

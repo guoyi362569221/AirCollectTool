@@ -48,6 +48,12 @@
     <Compile Include="FrAboutAs.Designer.cs">
       <DependentUpon>FrAboutAs.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrHistoryDataCollect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrHistoryDataCollect.Designer.cs">
+      <DependentUpon>FrHistoryDataCollect.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrDataCollect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     <Compile Include="UtilTool\Utility.cs" />
     <EmbeddedResource Include="FrAboutAs.resx">
       <DependentUpon>FrAboutAs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrHistoryDataCollect.resx">
+      <DependentUpon>FrHistoryDataCollect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrDataCollect.resx">
       <DependentUpon>FrDataCollect.cs</DependentUpon>
@@ -188,6 +197,8 @@
     <Content Include="Dll\Newtonsoft.Json.dll" />
     <Content Include="Dll\System.Data.SQLite.dll" />
     <Content Include="Dll\System.Data.SQLite.Linq.dll" />
+    <None Include="Resources\lscj.png" />
+    <None Include="Resources\lscj1.png" />
     <None Include="Resources\timg.gif" />
     <None Include="Resources\tb.png" />
     <None Include="Resources\pzsjy.png" />

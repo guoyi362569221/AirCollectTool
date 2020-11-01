@@ -103,6 +103,26 @@ namespace MonitorDataSys.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap lscj {
+            get {
+                object obj = ResourceManager.GetObject("lscj", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap lscj1 {
+            get {
+                object obj = ResourceManager.GetObject("lscj1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap lxwm {
             get {
                 object obj = ResourceManager.GetObject("lxwm", resourceCulture);

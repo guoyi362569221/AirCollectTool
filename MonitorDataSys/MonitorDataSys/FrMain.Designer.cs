@@ -31,20 +31,21 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fr_Main));
             this.groupBoxLeftMenu = new System.Windows.Forms.GroupBox();
-            this.dataSourceConfigBtn = new System.Windows.Forms.Button();
-            this.dataCollectBtn = new System.Windows.Forms.Button();
-            this.aboutUsBtn = new System.Windows.Forms.Button();
-            this.lookLogBtn = new System.Windows.Forms.Button();
-            this.dataConfigBtn = new System.Windows.Forms.Button();
             this.groupBoxRightMenu = new System.Windows.Forms.GroupBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.NotifyMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.historyCollectBtn = new System.Windows.Forms.Button();
+            this.dataSourceConfigBtn = new System.Windows.Forms.Button();
+            this.dataCollectBtn = new System.Windows.Forms.Button();
+            this.aboutUsBtn = new System.Windows.Forms.Button();
+            this.lookLogBtn = new System.Windows.Forms.Button();
+            this.dataConfigBtn = new System.Windows.Forms.Button();
             this.groupBoxLeftMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.NotifyMenu.SuspendLayout();
@@ -52,6 +53,7 @@
             // 
             // groupBoxLeftMenu
             // 
+            this.groupBoxLeftMenu.Controls.Add(this.historyCollectBtn);
             this.groupBoxLeftMenu.Controls.Add(this.dataSourceConfigBtn);
             this.groupBoxLeftMenu.Controls.Add(this.dataCollectBtn);
             this.groupBoxLeftMenu.Controls.Add(this.aboutUsBtn);
@@ -63,76 +65,6 @@
             this.groupBoxLeftMenu.TabIndex = 0;
             this.groupBoxLeftMenu.TabStop = false;
             this.groupBoxLeftMenu.Text = "菜单区";
-            // 
-            // dataSourceConfigBtn
-            // 
-            this.dataSourceConfigBtn.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.dataSourceConfigBtn.Image = global::MonitorDataSys.Properties.Resources.pzsjy;
-            this.dataSourceConfigBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.dataSourceConfigBtn.Location = new System.Drawing.Point(16, 20);
-            this.dataSourceConfigBtn.Name = "dataSourceConfigBtn";
-            this.dataSourceConfigBtn.Size = new System.Drawing.Size(146, 54);
-            this.dataSourceConfigBtn.TabIndex = 0;
-            this.dataSourceConfigBtn.Text = "Set配置数据源";
-            this.dataSourceConfigBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.dataSourceConfigBtn.UseVisualStyleBackColor = false;
-            this.dataSourceConfigBtn.Click += new System.EventHandler(this.dataSourceConfigBtn_Click);
-            // 
-            // dataCollectBtn
-            // 
-            this.dataCollectBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.dataCollectBtn.Image = global::MonitorDataSys.Properties.Resources.dqhj;
-            this.dataCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.dataCollectBtn.Location = new System.Drawing.Point(16, 157);
-            this.dataCollectBtn.Name = "dataCollectBtn";
-            this.dataCollectBtn.Size = new System.Drawing.Size(146, 54);
-            this.dataCollectBtn.TabIndex = 2;
-            this.dataCollectBtn.Text = "Do数据采集  ";
-            this.dataCollectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.dataCollectBtn.UseVisualStyleBackColor = false;
-            this.dataCollectBtn.Click += new System.EventHandler(this.dataCollectBtn_Click);
-            // 
-            // aboutUsBtn
-            // 
-            this.aboutUsBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.aboutUsBtn.Image = global::MonitorDataSys.Properties.Resources.lxwm;
-            this.aboutUsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.aboutUsBtn.Location = new System.Drawing.Point(16, 299);
-            this.aboutUsBtn.Name = "aboutUsBtn";
-            this.aboutUsBtn.Size = new System.Drawing.Size(146, 54);
-            this.aboutUsBtn.TabIndex = 4;
-            this.aboutUsBtn.Text = "About关于我们";
-            this.aboutUsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.aboutUsBtn.UseVisualStyleBackColor = false;
-            this.aboutUsBtn.Click += new System.EventHandler(this.aboutUsBtn_Click);
-            // 
-            // lookLogBtn
-            // 
-            this.lookLogBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.lookLogBtn.Image = global::MonitorDataSys.Properties.Resources.hjpz;
-            this.lookLogBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lookLogBtn.Location = new System.Drawing.Point(16, 226);
-            this.lookLogBtn.Name = "lookLogBtn";
-            this.lookLogBtn.Size = new System.Drawing.Size(146, 54);
-            this.lookLogBtn.TabIndex = 3;
-            this.lookLogBtn.Text = "Look日志查看 ";
-            this.lookLogBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lookLogBtn.UseVisualStyleBackColor = false;
-            this.lookLogBtn.Click += new System.EventHandler(this.lookLogBtn_Click);
-            // 
-            // dataConfigBtn
-            // 
-            this.dataConfigBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.dataConfigBtn.Image = global::MonitorDataSys.Properties.Resources.cssz;
-            this.dataConfigBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.dataConfigBtn.Location = new System.Drawing.Point(16, 87);
-            this.dataConfigBtn.Name = "dataConfigBtn";
-            this.dataConfigBtn.Size = new System.Drawing.Size(146, 54);
-            this.dataConfigBtn.TabIndex = 1;
-            this.dataConfigBtn.Text = "Base站点同步 ";
-            this.dataConfigBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.dataConfigBtn.UseVisualStyleBackColor = false;
-            this.dataConfigBtn.Click += new System.EventHandler(this.dataConfigBtn_Click);
             // 
             // groupBoxRightMenu
             // 
@@ -153,6 +85,12 @@
             this.statusStrip1.Size = new System.Drawing.Size(889, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(180, 17);
+            this.toolStripStatusLabel2.Text = "版权所属：大气团队研制          ";
             // 
             // toolStripStatusLabel1
             // 
@@ -195,11 +133,89 @@
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
-            // toolStripStatusLabel2
+            // historyCollectBtn
             // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(180, 17);
-            this.toolStripStatusLabel2.Text = "版权所属：大气团队研制          ";
+            this.historyCollectBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.historyCollectBtn.Image = global::MonitorDataSys.Properties.Resources.lscj1;
+            this.historyCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.historyCollectBtn.Location = new System.Drawing.Point(16, 251);
+            this.historyCollectBtn.Name = "historyCollectBtn";
+            this.historyCollectBtn.Size = new System.Drawing.Size(146, 54);
+            this.historyCollectBtn.TabIndex = 5;
+            this.historyCollectBtn.Text = "History历史采集";
+            this.historyCollectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.historyCollectBtn.UseVisualStyleBackColor = false;
+            this.historyCollectBtn.Click += new System.EventHandler(this.historyCollectBtn_Click);
+            // 
+            // dataSourceConfigBtn
+            // 
+            this.dataSourceConfigBtn.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.dataSourceConfigBtn.Image = global::MonitorDataSys.Properties.Resources.pzsjy;
+            this.dataSourceConfigBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.dataSourceConfigBtn.Location = new System.Drawing.Point(16, 15);
+            this.dataSourceConfigBtn.Name = "dataSourceConfigBtn";
+            this.dataSourceConfigBtn.Size = new System.Drawing.Size(146, 52);
+            this.dataSourceConfigBtn.TabIndex = 0;
+            this.dataSourceConfigBtn.Text = "Set配置数据源";
+            this.dataSourceConfigBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.dataSourceConfigBtn.UseVisualStyleBackColor = false;
+            this.dataSourceConfigBtn.Click += new System.EventHandler(this.dataSourceConfigBtn_Click);
+            // 
+            // dataCollectBtn
+            // 
+            this.dataCollectBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.dataCollectBtn.Image = global::MonitorDataSys.Properties.Resources.dqhj;
+            this.dataCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.dataCollectBtn.Location = new System.Drawing.Point(16, 133);
+            this.dataCollectBtn.Name = "dataCollectBtn";
+            this.dataCollectBtn.Size = new System.Drawing.Size(146, 54);
+            this.dataCollectBtn.TabIndex = 2;
+            this.dataCollectBtn.Text = "Do数据采集  ";
+            this.dataCollectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.dataCollectBtn.UseVisualStyleBackColor = false;
+            this.dataCollectBtn.Click += new System.EventHandler(this.dataCollectBtn_Click);
+            // 
+            // aboutUsBtn
+            // 
+            this.aboutUsBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.aboutUsBtn.Image = global::MonitorDataSys.Properties.Resources.lxwm;
+            this.aboutUsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.aboutUsBtn.Location = new System.Drawing.Point(16, 310);
+            this.aboutUsBtn.Name = "aboutUsBtn";
+            this.aboutUsBtn.Size = new System.Drawing.Size(146, 54);
+            this.aboutUsBtn.TabIndex = 4;
+            this.aboutUsBtn.Text = "About关于我们";
+            this.aboutUsBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.aboutUsBtn.UseVisualStyleBackColor = false;
+            this.aboutUsBtn.Click += new System.EventHandler(this.aboutUsBtn_Click);
+            // 
+            // lookLogBtn
+            // 
+            this.lookLogBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.lookLogBtn.Image = global::MonitorDataSys.Properties.Resources.hjpz;
+            this.lookLogBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lookLogBtn.Location = new System.Drawing.Point(16, 192);
+            this.lookLogBtn.Name = "lookLogBtn";
+            this.lookLogBtn.Size = new System.Drawing.Size(146, 54);
+            this.lookLogBtn.TabIndex = 3;
+            this.lookLogBtn.Text = "Look日志查看 ";
+            this.lookLogBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lookLogBtn.UseVisualStyleBackColor = false;
+            this.lookLogBtn.Click += new System.EventHandler(this.lookLogBtn_Click);
+            // 
+            // dataConfigBtn
+            // 
+            this.dataConfigBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.dataConfigBtn.Image = global::MonitorDataSys.Properties.Resources.cssz;
+            this.dataConfigBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.dataConfigBtn.Location = new System.Drawing.Point(16, 73);
+            this.dataConfigBtn.Name = "dataConfigBtn";
+            this.dataConfigBtn.Size = new System.Drawing.Size(146, 54);
+            this.dataConfigBtn.TabIndex = 1;
+            this.dataConfigBtn.Text = "Base站点同步 ";
+            this.dataConfigBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.dataConfigBtn.UseVisualStyleBackColor = false;
+            this.dataConfigBtn.Click += new System.EventHandler(this.dataConfigBtn_Click);
             // 
             // Fr_Main
             // 
@@ -245,6 +261,7 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button dataSourceConfigBtn;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.Button historyCollectBtn;
     }
 }
 

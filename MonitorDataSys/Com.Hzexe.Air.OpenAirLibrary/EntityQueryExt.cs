@@ -63,23 +63,30 @@ namespace Com.Hzexe.Air.OpenAirLibrary
                     q.Completed += (a, b) => auto.Set();
                     auto.WaitOne();
                     auto.Dispose();
-                    byte[] result = Decompress(q.Value);
-                    if (result != null && result.Length > 0)
+                    if (q.HasError)
                     {
-#if (DEBUG)
-                        string xml = System.Text.Encoding.UTF8.GetString(result);
-#endif
-                        using (MemoryStream stream = new MemoryStream())
-                        {
-                            DataContractSerializer serializer = new DataContractSerializer(typeof(T));
-                            stream.Write(result, 0, result.Length);
-                            stream.Position = 0;// (0L);
-                            return (serializer.ReadObject(stream) as T);
-                        }
+                        return null;
                     }
                     else
                     {
-                        return null;
+                        byte[] result = Decompress(q.Value);
+                        if (result != null && result.Length > 0)
+                        {
+#if (DEBUG)
+                            string xml = System.Text.Encoding.UTF8.GetString(result);
+#endif
+                            using (MemoryStream stream = new MemoryStream())
+                            {
+                                DataContractSerializer serializer = new DataContractSerializer(typeof(T));
+                                stream.Write(result, 0, result.Length);
+                                stream.Position = 0;// (0L);
+                                return (serializer.ReadObject(stream) as T);
+                            }
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
                 catch (Exception e)
@@ -105,6 +112,10 @@ namespace Com.Hzexe.Air.OpenAirLibrary
                     q.Completed += (a, b) => auto.Set();
                     auto.WaitOne();
                     auto.Dispose();
+                    if (q.HasError)
+                    {
+                        return default(U);
+                    }
                     return q.Value;
                 });
             }
@@ -134,7 +145,7 @@ namespace Com.Hzexe.Air.OpenAirLibrary
 
                     auto.WaitOne();
                     auto.Dispose();
-                    if (null != q.Error) 
+                    if (null != q.Error)
                     {
                         return null;
                     }

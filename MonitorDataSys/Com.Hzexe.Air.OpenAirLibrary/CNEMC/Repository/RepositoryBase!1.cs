@@ -73,9 +73,8 @@
                 }
                 this.Service.Load<T>(query).Completed+=(handler);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
             }
         }
 

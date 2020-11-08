@@ -489,8 +489,7 @@ namespace MonitorDataSys
                                             {
                                                 if (!String.IsNullOrEmpty(cityAQILiveDataList[j].AQI) && cityAQILiveDataList[j].AQI != "—")
                                                 {
-                                                    //bool isCompeletCollect = cmhr.IsCompeletCollect(hourCity, cityCode, cityAQILiveDataList[j].TimePoint);
-                                                    bool isCompeletCollect = false;
+                                                    bool isCompeletCollect = cmhr.IsCompeletCollect(hourCity, cityCode, cityAQILiveDataList[j].TimePoint);
                                                     if (!isCompeletCollect)
                                                     {
                                                         JObject item = new JObject();
@@ -599,8 +598,7 @@ namespace MonitorDataSys
                                             }
                                             if (!String.IsNullOrEmpty(stationAQILiveData[j].AQI) && stationAQILiveData[j].AQI != "—")
                                             {
-                                                //bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
-                                                bool isCompeletCollect = false;
+                                                bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
                                                 if (!isCompeletCollect)
                                                 {
                                                     JObject item = new JObject();

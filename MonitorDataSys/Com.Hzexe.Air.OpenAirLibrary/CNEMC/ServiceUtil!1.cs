@@ -49,7 +49,14 @@
 
         public static string GetServiceAddress(string serviceName)
         {
-            return CNEMCService.ServiceConfigs[serviceName];
+            try
+            {
+                return CNEMCService.ServiceConfigs[serviceName];
+            }
+            catch (Exception e) 
+            {
+                return null;
+            }
         }
         /*
         public enum ServiceType

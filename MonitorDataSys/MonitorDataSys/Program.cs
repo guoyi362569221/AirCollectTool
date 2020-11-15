@@ -80,7 +80,7 @@ namespace MonitorDataSys
                 }
                 else
                 {
-                    Thread.Sleep(10 * 1000);
+                    Thread.Sleep(30 * 1000);
                 }
             };
             //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -104,7 +104,7 @@ namespace MonitorDataSys
                 }
                 else
                 {
-                    Thread.Sleep(10 * 1000);
+                    Thread.Sleep(30 * 1000);
                 }
             };
             //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);

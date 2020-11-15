@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.airStationLoadBtn = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -44,6 +44,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.load_lb = new System.Windows.Forms.Label();
             this.UniqueCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.序号 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AreaName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,7 +54,6 @@
             this.DBType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DBIPAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.load_lb = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -185,14 +185,14 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.UniqueCode,
@@ -208,13 +208,27 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 17);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(656, 266);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView1_RowPostPaint);
+            // 
+            // load_lb
+            // 
+            this.load_lb.BackColor = System.Drawing.Color.Transparent;
+            this.load_lb.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.load_lb.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.load_lb.Image = global::MonitorDataSys.Properties.Resources.timg;
+            this.load_lb.Location = new System.Drawing.Point(0, -1);
+            this.load_lb.Name = "load_lb";
+            this.load_lb.Size = new System.Drawing.Size(668, 354);
+            this.load_lb.TabIndex = 2;
+            this.load_lb.Text = "正在拼命同步站点...";
+            this.load_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.load_lb.Visible = false;
             // 
             // UniqueCode
             // 
@@ -234,8 +248,8 @@
             // AreaName
             // 
             this.AreaName.DataPropertyName = "Area";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AreaName.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AreaName.DefaultCellStyle = dataGridViewCellStyle2;
             this.AreaName.FillWeight = 90.70252F;
             this.AreaName.HeaderText = "城市名称";
             this.AreaName.MinimumWidth = 3;
@@ -284,9 +298,9 @@
             // 
             // Column1
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.NullValue = "删除";
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.NullValue = "删除";
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column1.FillWeight = 70F;
             this.Column1.HeaderText = "操作";
             this.Column1.Name = "Column1";
@@ -296,28 +310,14 @@
             this.Column1.UseColumnTextForButtonValue = true;
             this.Column1.Visible = false;
             // 
-            // load_lb
-            // 
-            this.load_lb.BackColor = System.Drawing.Color.Transparent;
-            this.load_lb.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.load_lb.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.load_lb.Image = global::MonitorDataSys.Properties.Resources.timg;
-            this.load_lb.Location = new System.Drawing.Point(0, -1);
-            this.load_lb.Name = "load_lb";
-            this.load_lb.Size = new System.Drawing.Size(668, 354);
-            this.load_lb.TabIndex = 2;
-            this.load_lb.Text = "正在拼命同步站点...";
-            this.load_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.load_lb.Visible = false;
-            // 
             // FrDataConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(670, 355);
-            this.Controls.Add(this.load_lb);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.load_lb);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrDataConfig";
             this.Text = "FrDataConfig";
@@ -346,6 +346,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox cityComboBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label load_lb;
         private System.Windows.Forms.DataGridViewTextBoxColumn UniqueCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn 序号;
         private System.Windows.Forms.DataGridViewTextBoxColumn AreaName;
@@ -355,6 +356,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DBType;
         private System.Windows.Forms.DataGridViewTextBoxColumn DBIPAddress;
         private System.Windows.Forms.DataGridViewButtonColumn Column1;
-        private System.Windows.Forms.Label load_lb;
     }
 }

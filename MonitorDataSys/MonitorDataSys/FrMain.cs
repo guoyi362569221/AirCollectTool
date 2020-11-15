@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -152,6 +153,10 @@ namespace MonitorDataSys
             try
             {
                 toolStripStatusLabel1.Text = "当前系统时间：" + System.DateTime.Now.ToString();
+                int wt;
+                int ct;
+                ThreadPool.GetAvailableThreads(out wt, out ct);
+                toolStripStatusLabel3.Text = "       线程情况：可用辅助线程" + wt + "个,异步I/O线程最大数" + ct+"个";
             }
             catch (Exception ex)
             {

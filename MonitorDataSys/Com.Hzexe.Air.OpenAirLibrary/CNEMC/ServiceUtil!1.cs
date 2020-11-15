@@ -5,7 +5,7 @@
     using System.ServiceModel;
     using System.ServiceModel.Channels;
 
-    public class ServiceUtil<T> where T: class, new()
+    public class ServiceUtil<T> where T : class, new()
     {
         public static T GetInstance()
         {
@@ -24,15 +24,15 @@
                 {
                     MaxBufferSize = 0x7fffffff,
                     MaxReceivedMessageSize = 0x7fffffffL,
-                    SendTimeout = new TimeSpan(0, 10, 0),
-                    ReceiveTimeout = new TimeSpan(0, 10, 0),
-                    OpenTimeout = new TimeSpan(0, 5, 0),
-                    CloseTimeout = new TimeSpan(0, 5, 0)
+                    SendTimeout = new TimeSpan(0, 2, 0),
+                    ReceiveTimeout = new TimeSpan(0, 2, 0),
+                    OpenTimeout = new TimeSpan(0, 2, 0),
+                    CloseTimeout = new TimeSpan(0, 2, 0)
                 };
                 System.ServiceModel.EndpointAddress address = new System.ServiceModel.EndpointAddress(new Uri(serviceAddress, UriKind.Absolute), new System.ServiceModel.Channels.AddressHeader[0]);
                 parameters[0] = binding;
                 parameters[1] = address;
-                
+
                 Type[] types = new Type[] { typeof(System.ServiceModel.Channels.Binding), typeof(System.ServiceModel.EndpointAddress) };
                 constructor = typeof(T).GetConstructor(types);
             }
@@ -40,9 +40,16 @@
             {
                 return default(T);
             }
-            if (constructor != null)
+            try
             {
-                local = (T) constructor.Invoke(parameters);
+                if (constructor != null)
+                {
+                    local = (T)constructor.Invoke(parameters);
+                }
+            }
+            catch (Exception e)
+            {
+
             }
             return local;
         }
@@ -53,7 +60,7 @@
             {
                 return CNEMCService.ServiceConfigs[serviceName];
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 return null;
             }

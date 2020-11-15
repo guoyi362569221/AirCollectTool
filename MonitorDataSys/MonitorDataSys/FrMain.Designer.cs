@@ -31,6 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fr_Main));
             this.groupBoxLeftMenu = new System.Windows.Forms.GroupBox();
+            this.historyCollectBtn = new System.Windows.Forms.Button();
+            this.dataSourceConfigBtn = new System.Windows.Forms.Button();
+            this.dataCollectBtn = new System.Windows.Forms.Button();
+            this.aboutUsBtn = new System.Windows.Forms.Button();
+            this.lookLogBtn = new System.Windows.Forms.Button();
+            this.dataConfigBtn = new System.Windows.Forms.Button();
             this.groupBoxRightMenu = new System.Windows.Forms.GroupBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -40,12 +46,7 @@
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.historyCollectBtn = new System.Windows.Forms.Button();
-            this.dataSourceConfigBtn = new System.Windows.Forms.Button();
-            this.dataCollectBtn = new System.Windows.Forms.Button();
-            this.aboutUsBtn = new System.Windows.Forms.Button();
-            this.lookLogBtn = new System.Windows.Forms.Button();
-            this.dataConfigBtn = new System.Windows.Forms.Button();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxLeftMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.NotifyMenu.SuspendLayout();
@@ -65,73 +66,6 @@
             this.groupBoxLeftMenu.TabIndex = 0;
             this.groupBoxLeftMenu.TabStop = false;
             this.groupBoxLeftMenu.Text = "菜单区";
-            // 
-            // groupBoxRightMenu
-            // 
-            this.groupBoxRightMenu.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBoxRightMenu.Location = new System.Drawing.Point(199, 13);
-            this.groupBoxRightMenu.Name = "groupBoxRightMenu";
-            this.groupBoxRightMenu.Size = new System.Drawing.Size(678, 371);
-            this.groupBoxRightMenu.TabIndex = 1;
-            this.groupBoxRightMenu.TabStop = false;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel2,
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 388);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(889, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(180, 17);
-            this.toolStripStatusLabel2.Text = "版权所属：大气团队研制          ";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(210, 17);
-            this.toolStripStatusLabel1.Text = "当前系统时间：2020-07-19 10:49:56";
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // NotifyMenu
-            // 
-            this.NotifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.显示ToolStripMenuItem,
-            this.退出ToolStripMenuItem});
-            this.NotifyMenu.Name = "NotifyMenu";
-            this.NotifyMenu.Size = new System.Drawing.Size(101, 48);
-            // 
-            // 显示ToolStripMenuItem
-            // 
-            this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
-            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.显示ToolStripMenuItem.Text = "显示";
-            this.显示ToolStripMenuItem.Click += new System.EventHandler(this.显示ToolStripMenuItem_Click);
-            // 
-            // 退出ToolStripMenuItem
-            // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.退出ToolStripMenuItem.Text = "退出";
-            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.ContextMenuStrip = this.NotifyMenu;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Tag = "";
-            this.notifyIcon1.Text = "监测数据采集";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // historyCollectBtn
             // 
@@ -217,6 +151,80 @@
             this.dataConfigBtn.UseVisualStyleBackColor = false;
             this.dataConfigBtn.Click += new System.EventHandler(this.dataConfigBtn_Click);
             // 
+            // groupBoxRightMenu
+            // 
+            this.groupBoxRightMenu.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBoxRightMenu.Location = new System.Drawing.Point(199, 13);
+            this.groupBoxRightMenu.Name = "groupBoxRightMenu";
+            this.groupBoxRightMenu.Size = new System.Drawing.Size(678, 371);
+            this.groupBoxRightMenu.TabIndex = 1;
+            this.groupBoxRightMenu.TabStop = false;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2,
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel3});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 388);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(889, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(168, 17);
+            this.toolStripStatusLabel2.Text = "版权所属：大气团队研制       ";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(210, 17);
+            this.toolStripStatusLabel1.Text = "当前系统时间：2020-07-19 10:49:56";
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // NotifyMenu
+            // 
+            this.NotifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.显示ToolStripMenuItem,
+            this.退出ToolStripMenuItem});
+            this.NotifyMenu.Name = "NotifyMenu";
+            this.NotifyMenu.Size = new System.Drawing.Size(101, 48);
+            // 
+            // 显示ToolStripMenuItem
+            // 
+            this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
+            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.显示ToolStripMenuItem.Text = "显示";
+            this.显示ToolStripMenuItem.Click += new System.EventHandler(this.显示ToolStripMenuItem_Click);
+            // 
+            // 退出ToolStripMenuItem
+            // 
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.NotifyMenu;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Tag = "";
+            this.notifyIcon1.Text = "监测数据采集";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(312, 17);
+            this.toolStripStatusLabel3.Text = "       线程情况：可用辅助线程0个,异步I/O线程最大数0个";
+            // 
             // Fr_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -262,6 +270,7 @@
         private System.Windows.Forms.Button dataSourceConfigBtn;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Button historyCollectBtn;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
     }
 }
 

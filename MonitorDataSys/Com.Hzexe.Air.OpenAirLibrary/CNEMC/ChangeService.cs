@@ -12,7 +12,7 @@
         {
             try
             {
-                TimeSpan sendTimeout = new TimeSpan(0, 10, 15);
+                TimeSpan sendTimeout = new TimeSpan(0, 2, 0);
                 WcfTimeoutUtility.ChangeWcfTimeout(this.changeService, sendTimeout, sendTimeout);
             }
             catch (Exception e)

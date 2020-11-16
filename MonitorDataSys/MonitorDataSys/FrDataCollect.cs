@@ -294,8 +294,6 @@ namespace MonitorDataSys
                 //开启调度器
                 scheduler.Start();
 
-                collectHourDataTool();
-
                 ////触发器
                 //ITrigger trigger = TriggerBuilder.Create()
                 //                            .WithIdentity(tigerName, groupName)

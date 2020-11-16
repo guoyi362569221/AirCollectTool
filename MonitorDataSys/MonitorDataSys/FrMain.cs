@@ -1,14 +1,9 @@
-﻿using MonitorDataSys.Repository;
-using MonitorDataSys.Repository.local;
+﻿using MonitorDataSys.Repository.local;
 using MonitorDataSys.UtilTool;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -57,6 +52,7 @@ namespace MonitorDataSys
             try
             {
                 timer1.Start();
+                timer2.Start();
             }
             catch (Exception ex)
             {
@@ -149,17 +145,52 @@ namespace MonitorDataSys
         //计时器
         private void timer1_Tick(object sender, EventArgs e)
         {
-            try
+            Task.Run(async () =>
             {
-                toolStripStatusLabel1.Text = "当前系统时间：" + System.DateTime.Now.ToString();
-            }
-            catch (Exception ex)
-            {
-                //日志处理
-                Loghelper.WriteErrorLog("捕获异常信息", ex);
-                lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
-            }
+                try
+                {
+                    toolStripStatusLabel1.Text = "当前系统时间：" + System.DateTime.Now.ToString();
+                }
+                catch (Exception ex)
+                {
+                    //日志处理
+                    Loghelper.WriteErrorLog("捕获异常信息", ex);
+                    lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
+                }
+            });
+            //try
+            //{
+            //    toolStripStatusLabel1.Text = "当前系统时间：" + System.DateTime.Now.ToString();
+            //}
+            //catch (Exception ex)
+            //{
+            //    //日志处理
+            //    Loghelper.WriteErrorLog("捕获异常信息", ex);
+            //    lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
+            //}
         }
+
+        //统计线程
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            Task.Run(async () =>
+               {
+                   try
+                   {
+                       int wt;
+                       int ct;
+                       ThreadPool.GetAvailableThreads(out wt, out ct);
+                       toolStripStatusLabel3.Text = "       线程情况：可用辅助线程" + wt + "个,异步I/O线程最大数" + ct + "个";
+                   }
+                   catch (Exception ex)
+                   {
+                      //日志处理
+                      Loghelper.WriteErrorLog("捕获异常信息", ex);
+                       lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
+                   }
+               });
+        }
+
 
         //切换菜单时修改菜单样式
         private void setMenuStyle(string selectedBtnName)
@@ -383,5 +414,7 @@ namespace MonitorDataSys
                 lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
             }
         }
+
+
     }
 }

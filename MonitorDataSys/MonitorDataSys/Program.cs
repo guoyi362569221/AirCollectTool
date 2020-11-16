@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -63,20 +64,9 @@ namespace MonitorDataSys
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            while(true)
-            {//循环处理，否则应用程序将会退出
-                //if (glExitApp)
-                //{//标志应用程序可以退出，否则程序退出后，进程仍然在运行
-                //    LogHelper.Save("ExitApp");
-                //    return;
-                //}
-                System.Threading.Thread.Sleep(5 * 1000);
-            };
-            //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
+            int wt;
+            int ct;
+            ThreadPool.GetAvailableThreads(out wt, out ct);
             while (true)
             {//循环处理，否则应用程序将会退出
                 //if (glExitApp)
@@ -84,7 +74,38 @@ namespace MonitorDataSys
                 //    LogHelper.Save("ExitApp");
                 //    return;
                 //}
-                System.Threading.Thread.Sleep(5 * 1000);
+                if (wt < 25)
+                {
+                    Thread.Sleep(5 * 60 * 1000);
+                }
+                else
+                {
+                    Thread.Sleep(30 * 1000);
+                }
+            };
+            //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            int wt;
+            int ct;
+            ThreadPool.GetAvailableThreads(out wt, out ct);
+            while (true)
+            {//循环处理，否则应用程序将会退出
+                //if (glExitApp)
+                //{//标志应用程序可以退出，否则程序退出后，进程仍然在运行
+                //    LogHelper.Save("ExitApp");
+                //    return;
+                //}
+                if (wt < 25)
+                {
+                    Thread.Sleep(5 * 60 * 1000);
+                }
+                else
+                {
+                    Thread.Sleep(30 * 1000);
+                }
             };
             //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

@@ -43,6 +43,7 @@
             this.lb_NextTime = new System.Windows.Forms.Label();
             this.lb_AllTotal = new System.Windows.Forms.Label();
             this.lb_TodayTotal = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuD_day_Day)).BeginInit();
@@ -274,5 +275,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown nuD_day_Day;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

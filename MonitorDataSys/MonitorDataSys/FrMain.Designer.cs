@@ -41,11 +41,13 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.NotifyMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.groupBoxLeftMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.NotifyMenu.SuspendLayout();
@@ -71,7 +73,7 @@
             this.historyCollectBtn.BackColor = System.Drawing.SystemColors.Control;
             this.historyCollectBtn.Image = global::MonitorDataSys.Properties.Resources.lscj1;
             this.historyCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.historyCollectBtn.Location = new System.Drawing.Point(16, 192);
+            this.historyCollectBtn.Location = new System.Drawing.Point(16, 251);
             this.historyCollectBtn.Name = "historyCollectBtn";
             this.historyCollectBtn.Size = new System.Drawing.Size(146, 54);
             this.historyCollectBtn.TabIndex = 5;
@@ -127,7 +129,7 @@
             this.lookLogBtn.BackColor = System.Drawing.SystemColors.Control;
             this.lookLogBtn.Image = global::MonitorDataSys.Properties.Resources.hjpz;
             this.lookLogBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lookLogBtn.Location = new System.Drawing.Point(16, 251);
+            this.lookLogBtn.Location = new System.Drawing.Point(16, 192);
             this.lookLogBtn.Name = "lookLogBtn";
             this.lookLogBtn.Size = new System.Drawing.Size(146, 54);
             this.lookLogBtn.TabIndex = 3;
@@ -163,7 +165,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel2,
-            this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel3});
             this.statusStrip1.Location = new System.Drawing.Point(0, 388);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(889, 22);
@@ -173,8 +176,8 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(180, 17);
-            this.toolStripStatusLabel2.Text = "版权所属：大气团队研制          ";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(168, 17);
+            this.toolStripStatusLabel2.Text = "版权所属：大气团队研制       ";
             // 
             // toolStripStatusLabel1
             // 
@@ -182,8 +185,15 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(210, 17);
             this.toolStripStatusLabel1.Text = "当前系统时间：2020-07-19 10:49:56";
             // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(312, 17);
+            this.toolStripStatusLabel3.Text = "       线程情况：可用辅助线程0个,异步I/O线程最大数0个";
+            // 
             // timer1
             // 
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // NotifyMenu
@@ -216,6 +226,11 @@
             this.notifyIcon1.Text = "监测数据采集";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 2000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Fr_Main
             // 
@@ -262,6 +277,8 @@
         private System.Windows.Forms.Button dataSourceConfigBtn;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Button historyCollectBtn;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

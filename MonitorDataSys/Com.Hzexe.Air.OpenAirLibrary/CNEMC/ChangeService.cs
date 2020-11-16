@@ -12,14 +12,13 @@
         {
             try
             {
-                TimeSpan sendTimeout = new TimeSpan(0, 10, 15);
+                TimeSpan sendTimeout = new TimeSpan(0, 0, 15);
                 WcfTimeoutUtility.ChangeWcfTimeout(this.changeService, sendTimeout, sendTimeout);
             }
             catch (Exception e)
             {
                 
             }
-            
         }
 
         public override string ToString()

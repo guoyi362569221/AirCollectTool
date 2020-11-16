@@ -24,10 +24,10 @@
                 {
                     MaxBufferSize = 0x7fffffff,
                     MaxReceivedMessageSize = 0x7fffffffL,
-                    SendTimeout = new TimeSpan(0, 10, 0),
-                    ReceiveTimeout = new TimeSpan(0, 10, 0),
-                    OpenTimeout = new TimeSpan(0, 5, 0),
-                    CloseTimeout = new TimeSpan(0, 5, 0)
+                    SendTimeout = new TimeSpan(0, 5, 0),
+                    ReceiveTimeout = new TimeSpan(0, 5, 0),
+                    OpenTimeout = new TimeSpan(0, 1, 0),
+                    CloseTimeout = new TimeSpan(0, 1, 0)
                 };
                 System.ServiceModel.EndpointAddress address = new System.ServiceModel.EndpointAddress(new Uri(serviceAddress, UriKind.Absolute), new System.ServiceModel.Channels.AddressHeader[0]);
                 parameters[0] = binding;

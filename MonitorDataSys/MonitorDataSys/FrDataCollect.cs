@@ -19,6 +19,7 @@ using Com.Hzexe.Air.OpenAirLibrary;
 using OpenRiaServices.DomainServices.Client;
 using System.Linq;
 using MonitorDataSys.Repository.bzk;
+using System.Threading;
 
 namespace MonitorDataSys
 {
@@ -293,6 +294,8 @@ namespace MonitorDataSys
                 //开启调度器
                 scheduler.Start();
 
+                collectHourDataTool();
+
                 ////触发器
                 //ITrigger trigger = TriggerBuilder.Create()
                 //                            .WithIdentity(tigerName, groupName)
@@ -476,6 +479,10 @@ namespace MonitorDataSys
                         {
                             try
                             {
+                                int wt = 0;
+                                int ct = 0;
+                                ThreadPool.GetAvailableThreads(out wt, out ct);
+                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
                                 EntityQuery<CityAQIPublishLive> cityAQILiveData = publishCtx.GetCityRealTimeAQIModelByCitycodeQuery(Int32.Parse(cityCode));
                                 if (cityAQILiveData != null)
                                 {
@@ -575,6 +582,10 @@ namespace MonitorDataSys
                         {
                             try
                             {
+                                int wt = 0;
+                                int ct = 0;
+                                ThreadPool.GetAvailableThreads(out wt, out ct);
+                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
                                 AQIDataPublishLive[] stationAQILiveData = await publishCtx.GetAreaAQIPublishLive(cityName).ResultAsync<AQIDataPublishLive[]>();
                                 if (stationAQILiveData != null)
                                 {
@@ -596,6 +607,7 @@ namespace MonitorDataSys
                                                     }
                                                 }
                                             }
+                                            
                                             if (!String.IsNullOrEmpty(stationAQILiveData[j].AQI) && stationAQILiveData[j].AQI != "—")
                                             {
                                                 bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
@@ -724,6 +736,10 @@ namespace MonitorDataSys
                         {
                             try
                             {
+                                int wt = 0;
+                                int ct = 0;
+                                ThreadPool.GetAvailableThreads(out wt, out ct);
+                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
                                 EntityQuery<CityDayAQIPublishLive> cityAQILiveData = publishCtx.GetCityDayAQIModelByCitycodeQuery(Int32.Parse(cityCode));
                                 if (cityAQILiveData != null)
                                 {
@@ -824,6 +840,11 @@ namespace MonitorDataSys
                         {
                             try
                             {
+                                int wt = 0;
+                                int ct = 0;
+                                ThreadPool.GetAvailableThreads(out wt, out ct);
+                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
+
                                 EntityQuery<AQIDataPublishHistory> stationAQIHistoryQuery = publishCtx.GetAQIDataPublishHistoriesQuery()
                                                            .Where(x => x.Area == cityName)
                                                            .Where(x => x.TimePoint >= dayTime && x.TimePoint <= dayTime)

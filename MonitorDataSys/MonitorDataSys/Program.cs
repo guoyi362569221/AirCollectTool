@@ -70,7 +70,7 @@ namespace MonitorDataSys
                 //    LogHelper.Save("ExitApp");
                 //    return;
                 //}
-                System.Threading.Thread.Sleep(2 * 1000);
+                System.Threading.Thread.Sleep(5 * 1000);
             };
             //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -84,7 +84,7 @@ namespace MonitorDataSys
                 //    LogHelper.Save("ExitApp");
                 //    return;
                 //}
-                System.Threading.Thread.Sleep(2 * 1000);
+                System.Threading.Thread.Sleep(5 * 1000);
             };
             //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

@@ -73,7 +73,7 @@
             this.historyCollectBtn.BackColor = System.Drawing.SystemColors.Control;
             this.historyCollectBtn.Image = global::MonitorDataSys.Properties.Resources.lscj1;
             this.historyCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.historyCollectBtn.Location = new System.Drawing.Point(16, 251);
+            this.historyCollectBtn.Location = new System.Drawing.Point(16, 192);
             this.historyCollectBtn.Name = "historyCollectBtn";
             this.historyCollectBtn.Size = new System.Drawing.Size(146, 54);
             this.historyCollectBtn.TabIndex = 5;
@@ -129,7 +129,7 @@
             this.lookLogBtn.BackColor = System.Drawing.SystemColors.Control;
             this.lookLogBtn.Image = global::MonitorDataSys.Properties.Resources.hjpz;
             this.lookLogBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lookLogBtn.Location = new System.Drawing.Point(16, 192);
+            this.lookLogBtn.Location = new System.Drawing.Point(16, 251);
             this.lookLogBtn.Name = "lookLogBtn";
             this.lookLogBtn.Size = new System.Drawing.Size(146, 54);
             this.lookLogBtn.TabIndex = 3;

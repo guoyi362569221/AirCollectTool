@@ -44,7 +44,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.load_lb = new System.Windows.Forms.Label();
             this.UniqueCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.序号 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AreaName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,6 +53,7 @@
             this.DBType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DBIPAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.load_lb = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -216,20 +216,6 @@
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView1_RowPostPaint);
             // 
-            // load_lb
-            // 
-            this.load_lb.BackColor = System.Drawing.Color.Transparent;
-            this.load_lb.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.load_lb.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.load_lb.Image = global::MonitorDataSys.Properties.Resources.timg;
-            this.load_lb.Location = new System.Drawing.Point(0, -1);
-            this.load_lb.Name = "load_lb";
-            this.load_lb.Size = new System.Drawing.Size(668, 354);
-            this.load_lb.TabIndex = 2;
-            this.load_lb.Text = "正在拼命同步站点...";
-            this.load_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.load_lb.Visible = false;
-            // 
             // UniqueCode
             // 
             this.UniqueCode.DataPropertyName = "UniqueCode";
@@ -310,14 +296,28 @@
             this.Column1.UseColumnTextForButtonValue = true;
             this.Column1.Visible = false;
             // 
+            // load_lb
+            // 
+            this.load_lb.BackColor = System.Drawing.Color.Transparent;
+            this.load_lb.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.load_lb.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.load_lb.Image = global::MonitorDataSys.Properties.Resources.timg;
+            this.load_lb.Location = new System.Drawing.Point(0, -1);
+            this.load_lb.Name = "load_lb";
+            this.load_lb.Size = new System.Drawing.Size(668, 354);
+            this.load_lb.TabIndex = 2;
+            this.load_lb.Text = "正在拼命同步站点...";
+            this.load_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.load_lb.Visible = false;
+            // 
             // FrDataConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(670, 355);
+            this.Controls.Add(this.load_lb);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.load_lb);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrDataConfig";
             this.Text = "FrDataConfig";

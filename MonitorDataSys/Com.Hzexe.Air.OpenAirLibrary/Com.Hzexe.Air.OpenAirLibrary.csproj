@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="ICSharpCode.SharpZipLib.Patched" Version="0.86.5.3" />
-    <PackageReference Include="OpenRiaServices.Client.Core" Version="4.5.3" />
+    <PackageReference Include="OpenRiaServices.Client.Core" Version="4.6.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     
   </ItemGroup>

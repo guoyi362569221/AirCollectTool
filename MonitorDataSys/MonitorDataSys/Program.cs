@@ -28,7 +28,6 @@ namespace MonitorDataSys
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-
                 //檢測系統是否有“XXXXX.vshost.exe”這一進程存在，如果已有，則不允許再打開。
                 if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1)
                 {
@@ -64,25 +63,25 @@ namespace MonitorDataSys
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            //int wt;
-            //int ct;
-            //ThreadPool.GetAvailableThreads(out wt, out ct);
-            //while (true)
-            //{//循环处理，否则应用程序将会退出
-            //    //if (glExitApp)
-            //    //{//标志应用程序可以退出，否则程序退出后，进程仍然在运行
-            //    //    LogHelper.Save("ExitApp");
-            //    //    return;
-            //    //}
-            //    if (wt < 25)
-            //    {
-            //        Thread.Sleep(5 * 60 * 1000);
-            //    }
-            //    else
-            //    {
-            //        Thread.Sleep(30 * 1000);
-            //    }
-            //};
+            int wt;
+            int ct;
+            ThreadPool.GetAvailableThreads(out wt, out ct);
+            while (true)
+            {//循环处理，否则应用程序将会退出
+                //if (glExitApp)
+                //{//标志应用程序可以退出，否则程序退出后，进程仍然在运行
+                //    LogHelper.Save("ExitApp");
+                //    return;
+                //}
+                if (wt < 25)
+                {
+                    Thread.Sleep(5 * 60 * 1000);
+                }
+                else
+                {
+                    Thread.Sleep(30 * 1000);
+                }
+            };
             //MessageBox.Show(str, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 

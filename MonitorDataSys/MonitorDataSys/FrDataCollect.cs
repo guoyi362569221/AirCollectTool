@@ -494,7 +494,8 @@ namespace MonitorDataSys
                                             {
                                                 if (!String.IsNullOrEmpty(cityAQILiveDataList[j].AQI) && cityAQILiveDataList[j].AQI != "—")
                                                 {
-                                                    bool isCompeletCollect = cmhr.IsCompeletCollect(hourCity, cityCode, cityAQILiveDataList[j].TimePoint);
+                                                    //bool isCompeletCollect = cmhr.IsCompeletCollect(hourCity, cityCode, cityAQILiveDataList[j].TimePoint);
+                                                    bool isCompeletCollect = false;
                                                     if (!isCompeletCollect)
                                                     {
                                                         JObject item = new JObject();
@@ -539,7 +540,8 @@ namespace MonitorDataSys
                     }
                     if (listCityHour.Count > 0)
                     {
-                        bool cityHourInsertResult = cmhr.AddDataInfo(hourCity, listCityHour);
+                        //bool cityHourInsertResult = cmhr.AddDataInfo(hourCity, listCityHour);
+                        bool cityHourInsertResult = true;
                         if (cityHourInsertResult)
                         {
                             collectTotal += listCityHour.Count;
@@ -608,7 +610,8 @@ namespace MonitorDataSys
                                             
                                             if (!String.IsNullOrEmpty(stationAQILiveData[j].AQI) && stationAQILiveData[j].AQI != "—")
                                             {
-                                                bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
+                                                //bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
+                                                bool isCompeletCollect = false;
                                                 if (!isCompeletCollect)
                                                 {
                                                     JObject item = new JObject();
@@ -652,7 +655,8 @@ namespace MonitorDataSys
                     }
                     if (listStationHour.Count > 0)
                     {
-                        bool stationHourInsertResult = smhr.AddDataInfo(hourStation, listStationHour);
+                        //bool stationHourInsertResult = smhr.AddDataInfo(hourStation, listStationHour);
+                        bool stationHourInsertResult = true;
                         if (stationHourInsertResult)
                         {
                             collectTotal += listStationHour.Count;

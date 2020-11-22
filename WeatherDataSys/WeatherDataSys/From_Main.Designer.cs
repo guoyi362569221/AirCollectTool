@@ -306,7 +306,6 @@
             // 
             // 显示ToolStripMenuItem
             // 
-            this.显示ToolStripMenuItem.Image = global::WeatherDataSys.Properties.Resources.show;
             this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
             this.显示ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.显示ToolStripMenuItem.Text = "显示";
@@ -314,7 +313,6 @@
             // 
             // 退出ToolStripMenuItem
             // 
-            this.退出ToolStripMenuItem.Image = global::WeatherDataSys.Properties.Resources.exit;
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.退出ToolStripMenuItem.Text = "退出";

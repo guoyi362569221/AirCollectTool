@@ -75,7 +75,7 @@
             this.historyCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.historyCollectBtn.Location = new System.Drawing.Point(16, 192);
             this.historyCollectBtn.Name = "historyCollectBtn";
-            this.historyCollectBtn.Size = new System.Drawing.Size(146, 54);
+            this.historyCollectBtn.Size = new System.Drawing.Size(146, 53);
             this.historyCollectBtn.TabIndex = 5;
             this.historyCollectBtn.Text = "History历史采集";
             this.historyCollectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -103,7 +103,7 @@
             this.dataCollectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.dataCollectBtn.Location = new System.Drawing.Point(16, 133);
             this.dataCollectBtn.Name = "dataCollectBtn";
-            this.dataCollectBtn.Size = new System.Drawing.Size(146, 54);
+            this.dataCollectBtn.Size = new System.Drawing.Size(146, 53);
             this.dataCollectBtn.TabIndex = 2;
             this.dataCollectBtn.Text = "Do数据采集  ";
             this.dataCollectBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -147,7 +147,7 @@
             this.dataConfigBtn.Name = "dataConfigBtn";
             this.dataConfigBtn.Size = new System.Drawing.Size(146, 54);
             this.dataConfigBtn.TabIndex = 1;
-            this.dataConfigBtn.Text = "Base站点同步 ";
+            this.dataConfigBtn.Text = "Air站点同步 ";
             this.dataConfigBtn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.dataConfigBtn.UseVisualStyleBackColor = false;
             this.dataConfigBtn.Click += new System.EventHandler(this.dataConfigBtn_Click);

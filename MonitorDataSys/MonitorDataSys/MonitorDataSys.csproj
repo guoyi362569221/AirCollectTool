@@ -266,10 +266,12 @@
       <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OpenRiaServices.DomainServices.Client, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenRiaServices.Client.Core.4.5.3\lib\net45\OpenRiaServices.DomainServices.Client.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dll\OpenRiaServices.DomainServices.Client.dll</HintPath>
     </Reference>
     <Reference Include="OpenRiaServices.DomainServices.Client.Web, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenRiaServices.Client.Core.4.5.3\lib\net45\OpenRiaServices.DomainServices.Client.Web.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dll\OpenRiaServices.DomainServices.Client.Web.dll</HintPath>
     </Reference>
     <Reference Include="Quartz, Version=2.6.2.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.2.6.2\lib\net40\Quartz.dll</HintPath>

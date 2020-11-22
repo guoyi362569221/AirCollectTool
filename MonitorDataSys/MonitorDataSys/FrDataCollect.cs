@@ -332,7 +332,7 @@ namespace MonitorDataSys
                                             .WithIdentity("dayTiger", groupName)
                                             .StartNow()
                                              .WithCronSchedule("0 0 0/" + nuD_day_Day.Value + " * * ? *")
-                                             //.WithCronSchedule("0 0/" + nuD_day_Day.Value + " * * * ?")
+                                            //.WithCronSchedule("0 0/" + nuD_day_Day.Value + " * * * ?")
                                             .Build();
                 dayTriggerList.Add(dayTrigger);
                 dictionary.Add(dayJob, dayTriggerList);
@@ -392,13 +392,13 @@ namespace MonitorDataSys
                     smdr = new StationMonitorDayRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 //日志处理
                 Loghelper.WriteErrorLog("捕获异常信息", e);
                 lr.AddLogInfo(e.ToString(), "捕获异常信息", "捕获异常信息", "Error");
             }
-            
+
         }
 
         public void writeLog(string msg, ColorEnum color = ColorEnum.Green)
@@ -473,14 +473,11 @@ namespace MonitorDataSys
                     {
                         string cityCode = cityTable.Rows[i]["CityCode"].ToString();
                         string cityName = cityTable.Rows[i]["Area"].ToString();
+                        bool isLoadSucess = false;
                         if (!String.IsNullOrEmpty(cityCode))
                         {
                             try
                             {
-                                int wt = 0;
-                                int ct = 0;
-                                ThreadPool.GetAvailableThreads(out wt, out ct);
-                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
                                 EntityQuery<CityAQIPublishLive> cityAQILiveData = publishCtx.GetCityRealTimeAQIModelByCitycodeQuery(Int32.Parse(cityCode));
                                 if (cityAQILiveData != null)
                                 {
@@ -494,8 +491,8 @@ namespace MonitorDataSys
                                             {
                                                 if (!String.IsNullOrEmpty(cityAQILiveDataList[j].AQI) && cityAQILiveDataList[j].AQI != "—")
                                                 {
-                                                    //bool isCompeletCollect = cmhr.IsCompeletCollect(hourCity, cityCode, cityAQILiveDataList[j].TimePoint);
-                                                    bool isCompeletCollect = false;
+                                                    bool isCompeletCollect = cmhr.IsCompeletCollect(hourCity, cityCode, cityAQILiveDataList[j].TimePoint);
+                                                    //bool isCompeletCollect = false;
                                                     if (!isCompeletCollect)
                                                     {
                                                         JObject item = new JObject();
@@ -527,7 +524,9 @@ namespace MonitorDataSys
                                                 }
                                             }
                                         }
+                                        isLoadSucess = true;
                                     }
+
                                 }
                             }
                             catch (Exception ex2)
@@ -536,12 +535,20 @@ namespace MonitorDataSys
                                 Loghelper.WriteErrorLog(cityName + "小时数据采集异常", ex2);
                                 lr.AddLogInfo(cityName + "小时数据采集异常", "", hourCity, "Error");
                             }
+                            if (isLoadSucess)
+                            {
+                                writeLog(cityName + "(" + cityCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
+                            }
+                            else
+                            {
+                                writeLog(cityName + "(" + cityCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
+                            }
                         }
                     }
                     if (listCityHour.Count > 0)
                     {
-                        //bool cityHourInsertResult = cmhr.AddDataInfo(hourCity, listCityHour);
-                        bool cityHourInsertResult = true;
+                        bool cityHourInsertResult = cmhr.AddDataInfo(hourCity, listCityHour);
+                        //bool cityHourInsertResult = true;
                         if (cityHourInsertResult)
                         {
                             collectTotal += listCityHour.Count;
@@ -582,10 +589,6 @@ namespace MonitorDataSys
                         {
                             try
                             {
-                                int wt = 0;
-                                int ct = 0;
-                                ThreadPool.GetAvailableThreads(out wt, out ct);
-                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
                                 AQIDataPublishLive[] stationAQILiveData = await publishCtx.GetAreaAQIPublishLive(cityName).ResultAsync<AQIDataPublishLive[]>();
                                 if (stationAQILiveData != null)
                                 {
@@ -594,8 +597,10 @@ namespace MonitorDataSys
                                     {
                                         for (int j = 0; j < stationAQILiveData.Count(); j++)
                                         {
+                                            bool isLoadSucess = false;
                                             IAQIDataPublishLive tmpIAQIDate = null;
                                             string stationCode = stationAQILiveData[j].StationCode;
+                                            string stationName = stationAQILiveData[j].PositionName;
                                             if (stationIAQILiveData != null && stationIAQILiveData.Length > 0)
                                             {
                                                 for (int v = 0; v < stationIAQILiveData.Length; v++)
@@ -607,11 +612,12 @@ namespace MonitorDataSys
                                                     }
                                                 }
                                             }
-                                            
+
                                             if (!String.IsNullOrEmpty(stationAQILiveData[j].AQI) && stationAQILiveData[j].AQI != "—")
                                             {
-                                                //bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
-                                                bool isCompeletCollect = false;
+                                                isLoadSucess = true;
+                                                bool isCompeletCollect = smhr.IsCompeletCollect(hourStation, stationCode, stationAQILiveData[j].TimePoint);
+                                                //bool isCompeletCollect = false;
                                                 if (!isCompeletCollect)
                                                 {
                                                     JObject item = new JObject();
@@ -641,6 +647,14 @@ namespace MonitorDataSys
                                                     listStationHour.Add(item);
                                                 }
                                             }
+                                            if (isLoadSucess)
+                                            {
+                                                writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
+                                            }
+                                            else
+                                            {
+                                                writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
+                                            }
                                         }
                                     }
                                 }
@@ -651,12 +665,13 @@ namespace MonitorDataSys
                                 Loghelper.WriteErrorLog("站点小时数据采集异常", ex2);
                                 lr.AddLogInfo("站点小时数据采集异常", "", hourStation, "Error");
                             }
+
                         }
                     }
                     if (listStationHour.Count > 0)
                     {
-                        //bool stationHourInsertResult = smhr.AddDataInfo(hourStation, listStationHour);
-                        bool stationHourInsertResult = true;
+                        bool stationHourInsertResult = smhr.AddDataInfo(hourStation, listStationHour);
+                        //bool stationHourInsertResult = true;
                         if (stationHourInsertResult)
                         {
                             collectTotal += listStationHour.Count;
@@ -703,7 +718,7 @@ namespace MonitorDataSys
         public async Task collectDayDataTool()
         {
 
-            
+
 
             //1.读取城市基本信息
             //2.读取站点基本信息
@@ -738,10 +753,6 @@ namespace MonitorDataSys
                         {
                             try
                             {
-                                int wt = 0;
-                                int ct = 0;
-                                ThreadPool.GetAvailableThreads(out wt, out ct);
-                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
                                 EntityQuery<CityDayAQIPublishLive> cityAQILiveData = publishCtx.GetCityDayAQIModelByCitycodeQuery(Int32.Parse(cityCode));
                                 if (cityAQILiveData != null)
                                 {
@@ -749,7 +760,7 @@ namespace MonitorDataSys
                                     if (cityAQILiveDataIEB != null)
                                     {
                                         List<CityDayAQIPublishLive> cityAQILiveDataList = cityAQILiveDataIEB.ToList();
-                                        if (cityAQILiveDataList != null) 
+                                        if (cityAQILiveDataList != null)
                                         {
                                             for (int j = 0; j < cityAQILiveDataList.Count; j++)
                                             {
@@ -842,22 +853,17 @@ namespace MonitorDataSys
                         {
                             try
                             {
-                                int wt = 0;
-                                int ct = 0;
-                                ThreadPool.GetAvailableThreads(out wt, out ct);
-                                Loghelper.WriteLog("当前线程情况wt=" + wt + ",ct=" + ct);
-
                                 EntityQuery<AQIDataPublishHistory> stationAQIHistoryQuery = publishCtx.GetAQIDataPublishHistoriesQuery()
                                                            .Where(x => x.Area == cityName)
                                                            .Where(x => x.TimePoint >= dayTime && x.TimePoint <= dayTime)
                                                            .OrderBy(x => x.TimePoint);
-                                if (stationAQIHistoryQuery != null) 
+                                if (stationAQIHistoryQuery != null)
                                 {
                                     IEnumerable<AQIDataPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(stationAQIHistoryQuery).ResultAsync();
-                                    if (stationAQIHistoryDataIEB != null) 
+                                    if (stationAQIHistoryDataIEB != null)
                                     {
                                         List<AQIDataPublishHistory> stationAQIHistoryDataList = stationAQIHistoryDataIEB.ToList();
-                                        if (stationAQIHistoryDataList != null) 
+                                        if (stationAQIHistoryDataList != null)
                                         {
                                             EntityQuery<IAQIDataPublishHistory> stationIAQIHistoryQuery = publishCtx.GetIAQIDataPublishHistoriesQuery()
                                             .Where(x => x.Area == cityName)
@@ -865,7 +871,7 @@ namespace MonitorDataSys
                                             .OrderBy(x => x.TimePoint);
                                             IEnumerable<IAQIDataPublishHistory> stationIAQIHistoryDataIEB = null;
                                             List<IAQIDataPublishHistory> stationIAQIHistoryDataList = null;
-                                            if (stationIAQIHistoryQuery != null) 
+                                            if (stationIAQIHistoryQuery != null)
                                             {
                                                 stationIAQIHistoryDataIEB = await publishCtx.Load(stationIAQIHistoryQuery).ResultAsync();
                                                 stationIAQIHistoryDataList = stationIAQIHistoryDataIEB.ToList();

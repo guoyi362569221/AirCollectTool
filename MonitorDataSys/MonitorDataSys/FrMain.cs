@@ -181,6 +181,8 @@ namespace MonitorDataSys
                        int ct;
                        ThreadPool.GetAvailableThreads(out wt, out ct);
                        toolStripStatusLabel3.Text = "       线程情况：可用辅助线程" + wt + "个,异步I/O线程最大数" + ct + "个";
+
+                       Utility.SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
                    }
                    catch (Exception ex)
                    {

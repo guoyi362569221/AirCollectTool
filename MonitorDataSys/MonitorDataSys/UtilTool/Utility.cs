@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace MonitorDataSys.UtilTool
 {
@@ -238,6 +239,40 @@ namespace MonitorDataSys.UtilTool
             }
             return result;
         }
+
+        #region 
+
+        /// <summary>
+        /// 内存回收
+        /// </summary>
+        /// <param name="process"></param>
+        /// <param name="minSize"></param>
+        /// <param name="maxSize"></param>
+        /// <returns></returns>
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
+        
+        /// <summary>
+        /// 释放内存
+        /// </summary>
+        public static void ClearMemory()
+        {
+            try
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+                }
+            }
+            catch (Exception e) 
+            {
+                Loghelper.WriteErrorLog("内存回收，释放内存失败", e);
+            }
+        }
+
+        #endregion
     }
 
 }

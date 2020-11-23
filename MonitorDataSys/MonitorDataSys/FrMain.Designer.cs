@@ -48,6 +48,7 @@
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.groupBoxLeftMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.NotifyMenu.SuspendLayout();
@@ -232,6 +233,11 @@
             this.timer2.Interval = 2000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // timer3
+            // 
+            this.timer3.Interval = 300000;
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            // 
             // Fr_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -279,6 +285,7 @@
         private System.Windows.Forms.Button historyCollectBtn;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer timer3;
     }
 }
 

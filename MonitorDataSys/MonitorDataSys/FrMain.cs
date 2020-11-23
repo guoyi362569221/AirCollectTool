@@ -53,6 +53,7 @@ namespace MonitorDataSys
             {
                 timer1.Start();
                 timer2.Start();
+                timer3.Start();
             }
             catch (Exception ex)
             {
@@ -186,11 +187,33 @@ namespace MonitorDataSys
                    }
                    catch (Exception ex)
                    {
-                      //日志处理
-                      Loghelper.WriteErrorLog("捕获异常信息", ex);
+                       //日志处理
+                       Loghelper.WriteErrorLog("捕获异常信息", ex);
                        lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
                    }
                });
+        }
+
+        /// <summary>
+        /// 清内存
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    Utility.SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+                }
+                catch (Exception ex)
+                {
+                    //日志处理
+                    Loghelper.WriteErrorLog("捕获异常信息", ex);
+                    lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
+                }
+            });
         }
 
 

@@ -280,7 +280,10 @@ namespace MonitorDataSys
             try
             {
                 setControlStatus(false);
-                this.rtb_Log.Clear();
+                if (this.rtb_Log != null)
+                {
+                    this.rtb_Log.Clear();
+                }
                 writeLog("开始采集数据", ColorEnum.Blue);
 
                 //清除任务和触发器
@@ -405,29 +408,32 @@ namespace MonitorDataSys
         {
             try
             {
-                this.rtb_Log.Focus();
-                this.rtb_Log.Select(this.rtb_Log.Text.Length, 0);
-                switch (color)
+                if (this.rtb_Log != null)
                 {
-                    case ColorEnum.Blue:
-                        this.rtb_Log.SelectionColor = Color.Blue;
-                        break;
-                    case ColorEnum.Red:
-                        this.rtb_Log.SelectionColor = Color.Red;
-                        break;
-                    case ColorEnum.Green:
-                        this.rtb_Log.SelectionColor = Color.Green;
-                        break;
-                    case ColorEnum.Black:
-                        this.rtb_Log.SelectionColor = Color.Black;
-                        break;
-                    case ColorEnum.Orange:
-                        this.rtb_Log.SelectionColor = Color.Orange;
-                        break;
+                    this.rtb_Log.Focus();
+                    this.rtb_Log.Select(this.rtb_Log.Text.Length, 0);
+                    switch (color)
+                    {
+                        case ColorEnum.Blue:
+                            this.rtb_Log.SelectionColor = Color.Blue;
+                            break;
+                        case ColorEnum.Red:
+                            this.rtb_Log.SelectionColor = Color.Red;
+                            break;
+                        case ColorEnum.Green:
+                            this.rtb_Log.SelectionColor = Color.Green;
+                            break;
+                        case ColorEnum.Black:
+                            this.rtb_Log.SelectionColor = Color.Black;
+                            break;
+                        case ColorEnum.Orange:
+                            this.rtb_Log.SelectionColor = Color.Orange;
+                            break;
+                    }
+                    string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                    this.rtb_Log.AppendText(time + "->" + msg);
+                    this.rtb_Log.AppendText("\r\n");
                 }
-                string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                this.rtb_Log.AppendText(time + "->" + msg);
-                this.rtb_Log.AppendText("\r\n");
             }
             catch (Exception ex)
             {
@@ -456,7 +462,10 @@ namespace MonitorDataSys
                 //本次采集数据条数
                 int collectTotal = 0;
 
-                this.rtb_Log.Clear();
+                if (this.rtb_Log != null)
+                {
+                    this.rtb_Log.Clear();
+                }
                 writeLog("开始采集数据", ColorEnum.Blue);
 
                 //创建domain客户端
@@ -732,7 +741,10 @@ namespace MonitorDataSys
                 //本次采集数据条数
                 int collectTotal = 0;
 
-                this.rtb_Log.Clear();
+                if (this.rtb_Log != null)
+                {
+                    this.rtb_Log.Clear();
+                }
                 writeLog("开始采集数据", ColorEnum.Blue);
 
                 //创建domain客户端

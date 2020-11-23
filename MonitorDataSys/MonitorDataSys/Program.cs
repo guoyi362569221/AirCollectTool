@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonitorDataSys.UtilTool;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -63,6 +64,7 @@ namespace MonitorDataSys
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
+            Loghelper.WriteErrorLog("Application_ThreadException", e.Exception);
             int wt;
             int ct;
             ThreadPool.GetAvailableThreads(out wt, out ct);
@@ -87,6 +89,7 @@ namespace MonitorDataSys
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            Loghelper.WriteErrorLog("CurrentDomain_UnhandledException", e.ExceptionObject as Exception);
             int wt;
             int ct;
             ThreadPool.GetAvailableThreads(out wt, out ct);

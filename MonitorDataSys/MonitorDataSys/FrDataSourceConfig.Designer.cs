@@ -150,7 +150,7 @@
             this.groupBox2.Size = new System.Drawing.Size(665, 285);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "站点数据列表";
+            this.groupBox2.Text = "数据源列表";
             // 
             // dataGridView1
             // 

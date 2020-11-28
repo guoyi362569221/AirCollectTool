@@ -20,6 +20,7 @@ using OpenRiaServices.DomainServices.Client;
 using System.Linq;
 using MonitorDataSys.Repository.bzk;
 using System.Threading;
+using System.ComponentModel;
 
 namespace MonitorDataSys
 {
@@ -408,31 +409,11 @@ namespace MonitorDataSys
         {
             try
             {
-                if (this.rtb_Log != null)
+                using (BackgroundWorker bw = new BackgroundWorker())
                 {
-                    this.rtb_Log.Focus();
-                    this.rtb_Log.Select(this.rtb_Log.Text.Length, 0);
-                    switch (color)
-                    {
-                        case ColorEnum.Blue:
-                            this.rtb_Log.SelectionColor = Color.Blue;
-                            break;
-                        case ColorEnum.Red:
-                            this.rtb_Log.SelectionColor = Color.Red;
-                            break;
-                        case ColorEnum.Green:
-                            this.rtb_Log.SelectionColor = Color.Green;
-                            break;
-                        case ColorEnum.Black:
-                            this.rtb_Log.SelectionColor = Color.Black;
-                            break;
-                        case ColorEnum.Orange:
-                            this.rtb_Log.SelectionColor = Color.Orange;
-                            break;
-                    }
-                    string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                    this.rtb_Log.AppendText(time + "->" + msg);
-                    this.rtb_Log.AppendText("\r\n");
+                    bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+                    bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+                    bw.RunWorkerAsync("Tank");
                 }
             }
             catch (Exception ex)
@@ -440,6 +421,44 @@ namespace MonitorDataSys
                 //日志处理
                 Loghelper.WriteErrorLog("捕获异常信息", ex);
                 lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
+            }
+        }
+
+        public void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // 这里是后台线程， 是在另一个线程上完成的
+            // 这里是真正做事的工作线程
+            // 可以在这里做一些费时的，复杂的操作
+        }
+
+        public void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
+            if (this.rtb_Log != null)
+            {
+                this.rtb_Log.Focus();
+                this.rtb_Log.Select(this.rtb_Log.Text.Length, 0);
+                switch (color)
+                {
+                    case ColorEnum.Blue:
+                        this.rtb_Log.SelectionColor = Color.Blue;
+                        break;
+                    case ColorEnum.Red:
+                        this.rtb_Log.SelectionColor = Color.Red;
+                        break;
+                    case ColorEnum.Green:
+                        this.rtb_Log.SelectionColor = Color.Green;
+                        break;
+                    case ColorEnum.Black:
+                        this.rtb_Log.SelectionColor = Color.Black;
+                        break;
+                    case ColorEnum.Orange:
+                        this.rtb_Log.SelectionColor = Color.Orange;
+                        break;
+                }
+                string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                this.rtb_Log.AppendText(time + "->" + msg);
+                this.rtb_Log.AppendText("\r\n");
             }
         }
 
@@ -546,11 +565,11 @@ namespace MonitorDataSys
                             }
                             if (isLoadSucess)
                             {
-                                writeLog(cityName + "(" + cityCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
+                                //writeLog(cityName + "(" + cityCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
                             }
                             else
                             {
-                                writeLog(cityName + "(" + cityCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
+                                //writeLog(cityName + "(" + cityCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
                             }
                         }
                     }
@@ -658,11 +677,11 @@ namespace MonitorDataSys
                                             }
                                             if (isLoadSucess)
                                             {
-                                                writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
+                                                //writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
                                             }
                                             else
                                             {
-                                                writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
+                                                //writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
                                             }
                                         }
                                     }

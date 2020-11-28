@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.airStationLoadBtn = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -54,6 +54,8 @@
             this.DBIPAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.load_lb = new System.Windows.Forms.Label();
+            this.typeComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -61,6 +63,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.typeComboBox);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.airStationLoadBtn);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.dBTypeComboBox);
@@ -124,9 +128,9 @@
             this.cityComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cityComboBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cityComboBox.FormattingEnabled = true;
-            this.cityComboBox.Location = new System.Drawing.Point(263, 14);
+            this.cityComboBox.Location = new System.Drawing.Point(231, 14);
             this.cityComboBox.Name = "cityComboBox";
-            this.cityComboBox.Size = new System.Drawing.Size(129, 28);
+            this.cityComboBox.Size = new System.Drawing.Size(109, 28);
             this.cityComboBox.TabIndex = 6;
             // 
             // stationQueryBtn
@@ -144,7 +148,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(207, 22);
+            this.label2.Location = new System.Drawing.Point(175, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 2;
@@ -155,16 +159,16 @@
             this.proviceComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.proviceComboBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.proviceComboBox.FormattingEnabled = true;
-            this.proviceComboBox.Location = new System.Drawing.Point(69, 14);
+            this.proviceComboBox.Location = new System.Drawing.Point(62, 14);
             this.proviceComboBox.Name = "proviceComboBox";
-            this.proviceComboBox.Size = new System.Drawing.Size(132, 28);
+            this.proviceComboBox.Size = new System.Drawing.Size(107, 28);
             this.proviceComboBox.TabIndex = 1;
             this.proviceComboBox.SelectedIndexChanged += new System.EventHandler(this.proviceComboBox_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 22);
+            this.label1.Location = new System.Drawing.Point(3, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 0;
@@ -185,14 +189,14 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.UniqueCode,
@@ -208,9 +212,9 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 17);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(656, 266);
             this.dataGridView1.TabIndex = 0;
@@ -234,8 +238,8 @@
             // AreaName
             // 
             this.AreaName.DataPropertyName = "Area";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AreaName.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AreaName.DefaultCellStyle = dataGridViewCellStyle10;
             this.AreaName.FillWeight = 90.70252F;
             this.AreaName.HeaderText = "城市名称";
             this.AreaName.MinimumWidth = 3;
@@ -284,9 +288,9 @@
             // 
             // Column1
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.NullValue = "删除";
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.NullValue = "删除";
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle11;
             this.Column1.FillWeight = 70F;
             this.Column1.HeaderText = "操作";
             this.Column1.Name = "Column1";
@@ -310,14 +314,36 @@
             this.load_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.load_lb.Visible = false;
             // 
+            // typeComboBox
+            // 
+            this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.typeComboBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.typeComboBox.FormattingEnabled = true;
+            this.typeComboBox.Items.AddRange(new object[] {
+            "空气质量",
+            "气象"});
+            this.typeComboBox.Location = new System.Drawing.Point(381, 16);
+            this.typeComboBox.Name = "typeComboBox";
+            this.typeComboBox.Size = new System.Drawing.Size(88, 28);
+            this.typeComboBox.TabIndex = 47;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(346, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 46;
+            this.label3.Text = "类型：";
+            // 
             // FrDataConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(670, 355);
-            this.Controls.Add(this.load_lb);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.load_lb);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrDataConfig";
             this.Text = "FrDataConfig";
@@ -356,5 +382,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DBType;
         private System.Windows.Forms.DataGridViewTextBoxColumn DBIPAddress;
         private System.Windows.Forms.DataGridViewButtonColumn Column1;
+        private System.Windows.Forms.ComboBox typeComboBox;
+        private System.Windows.Forms.Label label3;
     }
 }

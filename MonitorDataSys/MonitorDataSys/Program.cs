@@ -44,6 +44,7 @@ namespace MonitorDataSys
             }
             catch (Exception ex)
             {
+                Loghelper.WriteErrorLog("Main", ex);
                 string str = "";
                 string strDateInfo = "出现应用程序未处理的异常：" + DateTime.Now.ToString() + "\r\n";
 

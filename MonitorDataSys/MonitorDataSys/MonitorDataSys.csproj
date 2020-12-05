@@ -109,8 +109,12 @@
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\ColorEnum.cs" />
     <Compile Include="Models\DataBaseType.cs" />
+    <Compile Include="Models\NationPrediction\AreaPrediction.cs" />
+    <Compile Include="Models\NationPrediction\CityPrediction.cs" />
+    <Compile Include="Models\NationPrediction\ProvincePrediction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\bzk\AreaPredictionRepository.cs" />
     <Compile Include="Repository\bzk\CityMonitorDayRepository.cs" />
     <Compile Include="Repository\bzk\CityMonitorHourRepository.cs" />
     <Compile Include="Repository\bzk\StationMonitorDayRepository.cs" />
@@ -120,6 +124,7 @@
     <Compile Include="Repository\local\CollectStaticRepository.cs" />
     <Compile Include="Repository\local\DataConfigRepository.cs" />
     <Compile Include="Repository\local\LogRepository.cs" />
+    <Compile Include="Repository\local\NationAreaPreditionRepository.cs" />
     <Compile Include="UtilTool\DataConvert\HcDataConvert.cs" />
     <Compile Include="UtilTool\DataConvert\JkDataConvert.cs" />
     <Compile Include="UtilTool\DBHelper.cs" />
@@ -128,6 +133,7 @@
     <Compile Include="UtilTool\IJobTool\LoadHourJob.cs" />
     <Compile Include="UtilTool\Loghelper.cs" />
     <Compile Include="UtilTool\MD5Helper.cs" />
+    <Compile Include="UtilTool\SendHelper.cs" />
     <Compile Include="UtilTool\SQLConnectionType.cs" />
     <Compile Include="UtilTool\SQLiteHelper.cs" />
     <Compile Include="UtilTool\Utility.cs" />
@@ -264,6 +270,9 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NSoup, Version=0.8.0.0, Culture=neutral, PublicKeyToken=6d44e53f0a65e802, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSoup.0.8.0\lib\net40\NSoup.dll</HintPath>
     </Reference>
     <Reference Include="OpenRiaServices.DomainServices.Client, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

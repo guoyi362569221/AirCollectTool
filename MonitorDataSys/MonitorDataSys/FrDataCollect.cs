@@ -21,6 +21,13 @@ using System.Linq;
 using MonitorDataSys.Repository.bzk;
 using System.Threading;
 using System.ComponentModel;
+using System.Net;
+using System.Text;
+using NSoup.Select;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using MonitorDataSys.Models.NationPredict;
+using MonitorDataSys.Models.NationPrediction;
 
 namespace MonitorDataSys
 {
@@ -35,6 +42,7 @@ namespace MonitorDataSys
         private readonly DataConfigRepository dcr = new DataConfigRepository();
         private readonly CollectStaticRepository cst = new CollectStaticRepository();
         private readonly LogRepository lr = new LogRepository();
+        private readonly NationAreaPreditionRepository napr = new NationAreaPreditionRepository();
         private CityMonitorHourRepository cmhr = null;
         private StationMonitorHourRepository smhr = null;
         private CityMonitorDayRepository cmdr = null;
@@ -51,6 +59,12 @@ namespace MonitorDataSys
         private IDictionary hourStationTableFiledDic = ConfigurationManager.GetSection("hourStationSettings") as IDictionary;
         private IDictionary dayCityTableFiledDic = ConfigurationManager.GetSection("dayCitySettings") as IDictionary;
         private IDictionary dayStationTableFiledDic = ConfigurationManager.GetSection("dayStationSettings") as IDictionary;
+
+        private readonly string areaPredictionUrl = ConfigurationManager.AppSettings["areaPredictionUrl"];
+        private readonly string provincePredictionUrl = ConfigurationManager.AppSettings["provincePredictionUrl"];
+        private readonly string cityPredictionUrl = ConfigurationManager.AppSettings["cityPredictionUrl"];
+
+        private delegate void InvokeCallback(string msg, ColorEnum color = ColorEnum.Green);
 
 
         //从工厂中获取一个调度器实例化
@@ -122,6 +136,11 @@ namespace MonitorDataSys
             }
         }
 
+        /// <summary>
+        /// 启动定时采集
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Start_Click(object sender, EventArgs e)
         {
             #region 测试用例
@@ -285,7 +304,7 @@ namespace MonitorDataSys
                 {
                     this.rtb_Log.Clear();
                 }
-                writeLog("开始采集数据", ColorEnum.Blue);
+                writeLog("已启动定时采集...", ColorEnum.Blue);
 
                 //清除任务和触发器
                 ClearJobTrigger();
@@ -354,12 +373,17 @@ namespace MonitorDataSys
             }
         }
 
+        /// <summary>
+        /// 停止定时采集
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Stop_Click(object sender, EventArgs e)
         {
             try
             {
                 setControlStatus(true);
-                this.writeLog("停止采集...", ColorEnum.Blue);
+                this.writeLog("已停止采集...", ColorEnum.Blue);
                 if (!scheduler.IsShutdown)
                 {
                     scheduler.Shutdown();
@@ -374,7 +398,7 @@ namespace MonitorDataSys
         }
 
         /// <summary>
-        /// 
+        /// 初始化数据库连接信息
         /// </summary>
         public void InitDBConnectInfo()
         {
@@ -405,15 +429,49 @@ namespace MonitorDataSys
 
         }
 
+        /// <summary>
+        /// 界面打印日志
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="color"></param>
         public void writeLog(string msg, ColorEnum color = ColorEnum.Green)
         {
             try
             {
-                using (BackgroundWorker bw = new BackgroundWorker())
+                //    //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
+                if (this.rtb_Log != null)
                 {
-                    bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-                    bw.DoWork += new DoWorkEventHandler(bw_DoWork);
-                    bw.RunWorkerAsync("Tank");
+                    if (rtb_Log.InvokeRequired)
+                    {
+                        InvokeCallback msgCallback = new InvokeCallback(writeLog);
+                        rtb_Log.Invoke(msgCallback, new object[] { msg, color });
+                    }
+                    else
+                    {
+                        this.rtb_Log.Focus();
+                        this.rtb_Log.Select(this.rtb_Log.Text.Length, 0);
+                        switch (color)
+                        {
+                            case ColorEnum.Blue:
+                                this.rtb_Log.SelectionColor = Color.Blue;
+                                break;
+                            case ColorEnum.Red:
+                                this.rtb_Log.SelectionColor = Color.Red;
+                                break;
+                            case ColorEnum.Green:
+                                this.rtb_Log.SelectionColor = Color.Green;
+                                break;
+                            case ColorEnum.Black:
+                                this.rtb_Log.SelectionColor = Color.Black;
+                                break;
+                            case ColorEnum.Orange:
+                                this.rtb_Log.SelectionColor = Color.Orange;
+                                break;
+                        }
+                        string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                        this.rtb_Log.AppendText(time + "->" + msg);
+                        this.rtb_Log.AppendText("\r\n");
+                    }
                 }
             }
             catch (Exception ex)
@@ -421,44 +479,6 @@ namespace MonitorDataSys
                 //日志处理
                 Loghelper.WriteErrorLog("捕获异常信息", ex);
                 lr.AddLogInfo(ex.ToString(), "捕获异常信息", "捕获异常信息", "Error");
-            }
-        }
-
-        public void bw_DoWork(object sender, DoWorkEventArgs e)
-        {
-            // 这里是后台线程， 是在另一个线程上完成的
-            // 这里是真正做事的工作线程
-            // 可以在这里做一些费时的，复杂的操作
-        }
-
-        public void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
-            if (this.rtb_Log != null)
-            {
-                this.rtb_Log.Focus();
-                this.rtb_Log.Select(this.rtb_Log.Text.Length, 0);
-                switch (color)
-                {
-                    case ColorEnum.Blue:
-                        this.rtb_Log.SelectionColor = Color.Blue;
-                        break;
-                    case ColorEnum.Red:
-                        this.rtb_Log.SelectionColor = Color.Red;
-                        break;
-                    case ColorEnum.Green:
-                        this.rtb_Log.SelectionColor = Color.Green;
-                        break;
-                    case ColorEnum.Black:
-                        this.rtb_Log.SelectionColor = Color.Black;
-                        break;
-                    case ColorEnum.Orange:
-                        this.rtb_Log.SelectionColor = Color.Orange;
-                        break;
-                }
-                string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                this.rtb_Log.AppendText(time + "->" + msg);
-                this.rtb_Log.AppendText("\r\n");
             }
         }
 
@@ -565,11 +585,11 @@ namespace MonitorDataSys
                             }
                             if (isLoadSucess)
                             {
-                                //writeLog(cityName + "(" + cityCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
+                                writeLog(cityName + "(" + cityCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
                             }
                             else
                             {
-                                //writeLog(cityName + "(" + cityCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
+                                writeLog(cityName + "(" + cityCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
                             }
                         }
                     }
@@ -677,11 +697,11 @@ namespace MonitorDataSys
                                             }
                                             if (isLoadSucess)
                                             {
-                                                //writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
+                                                writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据已下载，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Green);
                                             }
                                             else
                                             {
-                                                //writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
+                                                writeLog(cityName + "(" + stationName + "-" + stationCode + ")数据下载失败，剩" + (cityTable.Rows.Count - i - 1) + "个城市。", ColorEnum.Red);
                                             }
                                         }
                                     }
@@ -745,8 +765,6 @@ namespace MonitorDataSys
         /// <returns></returns>
         public async Task collectDayDataTool()
         {
-
-
 
             //1.读取城市基本信息
             //2.读取站点基本信息
@@ -1011,6 +1029,124 @@ namespace MonitorDataSys
                 Loghelper.WriteErrorLog("数据采集异常", ex);
                 lr.AddLogInfo(ex.ToString(), "", "", "Error");
             }
+        }
+
+        /// <summary>
+        /// 采集国家环境监测总站区域预报数据
+        /// </summary>
+        public void collectAreaPrediction()
+        {
+            #region 区域预报
+            try
+            {
+                DataTable areaTable = napr.NationAreaInfoQuery();
+                if (areaTable != null && areaTable.Rows.Count > 0)
+                {
+                    List<AreaPrediction> list = new List<AreaPrediction>();
+                    for (int i = 0; i < areaTable.Rows.Count; i++)
+                    {
+                        AreaPrediction areaPrediction = new AreaPrediction();
+                        try
+                        {
+                            string areaCode = areaTable.Rows[i]["AreaCode"].ToString();
+                            // 调用这个接口 
+                            string areaUrl = areaPredictionUrl + "?areaCode=" + areaCode + "&strForecastType=1&_=" + new DateTime().Millisecond;//  预报未来7天的数据
+                            string resultAreaStr = SendHelper.SendPost(areaUrl);
+                            if (!String.IsNullOrEmpty(resultAreaStr))
+                            {
+                                areaPrediction = JsonConvert.DeserializeObject<AreaPrediction>(resultAreaStr);
+                            }
+                            else
+                            {
+                                //请先进性站点同步
+                                writeLog("<请先完善全国区域基本信息，然后再进行采集。", ColorEnum.Orange);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            //日志处理
+                            Loghelper.WriteErrorLog("采集国家区域预报数据异常", ex);
+                        }
+                    }
+                    if (list.Count > 0)
+                    {
+                         
+                    }
+                    else 
+                    {
+                        //在SQLite表中录入当前采集条数
+                        writeLog("<" + areaTable.Rows.Count + "个区域>暂无要采集预报数据", ColorEnum.Orange);
+                    }
+                }
+                else
+                {
+                    //请先进性站点同步
+                    writeLog("<请先完善全国区域基本信息，然后再进行采集。", ColorEnum.Orange);
+                }
+            }
+            catch (Exception e)
+            {
+                //日志处理
+                Loghelper.WriteErrorLog("采集国家区域预报数据异常", e);
+                lr.AddLogInfo(e.ToString(), "", "", "Error");
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// 采集国家环境监测总站省域预报数据
+        /// </summary>
+        public void collectProvincePrediction()
+        {
+            #region 省域预报
+            try
+            {
+                //调用这个接口 
+                string provinceUrl = provincePredictionUrl;//  预报未来3天的数据
+                string resultProvinceStr = SendHelper.SendPost(provinceUrl);
+                if (!String.IsNullOrEmpty(resultProvinceStr))
+                {
+                    List<ProvincePrediction> provinceList = JsonConvert.DeserializeObject<List<ProvincePrediction>>(resultProvinceStr);
+                }
+            }
+            catch (Exception e)
+            {
+                //日志处理
+                Loghelper.WriteErrorLog("采集国家省域预报数据异常", e);
+                lr.AddLogInfo(e.ToString(), "", "", "Error");
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// 采集国家环境监测总站城市预报数据
+        /// </summary>
+        public void collectCityPrediction()
+        {
+            #region 城市预报
+            try
+            {
+                //预报未来5天的数据
+                WebClient webClient = new WebClient();
+                String url = cityPredictionUrl + "?_=" + new DateTime().Millisecond;//1565404428085
+                String HtmlString = Encoding.GetEncoding("utf-8").GetString(webClient.DownloadData(url));
+                NSoup.Nodes.Document doc = NSoup.NSoupClient.Parse(HtmlString);
+                Elements ele = doc.GetElementsByTag("script").Eq(12);
+                if (null != ele)
+                {
+                    string[] sArray = Regex.Split(ele.ElementAt(0).Data, "var", RegexOptions.IgnoreCase);
+                    String cityData = sArray[3].Replace("\n", "").Replace("\t", "").Replace("\r", "");
+                    cityData = cityData.Substring(cityData.IndexOf("[") + 1, cityData.IndexOf("]") + 1).Replace("][0],", "");
+                    List<CityPrediction> areaList = JsonConvert.DeserializeObject<List<CityPrediction>>(cityData);
+                }
+            }
+            catch (Exception e)
+            {
+                //日志处理
+                Loghelper.WriteErrorLog("采集国家城市预报数据异常", e);
+                lr.AddLogInfo(e.ToString(), "", "", "Error");
+            }
+            #endregion
         }
 
         public void refreshStaticInfo()

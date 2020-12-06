@@ -103,29 +103,39 @@ namespace MonitorDataSys.UtilTool
         /// <returns></returns>
         public static string SendPost(string url)
         {
+            string result = "";
             try
             {
                 //发送请求
                 var req = (HttpWebRequest)WebRequest.Create(url);
                 req.Timeout = 1000 * 5000;//50分钟
                 var rep = (HttpWebResponse)req.GetResponse();//得到请求结果
-                Stream stream = rep.GetResponseStream();
-                if (stream != null)
-                    using (var reader = new StreamReader(stream, Encoding.UTF8))
+                if (rep.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream stream = rep.GetResponseStream();
+                    if (stream != null)
                     {
-                        string responseHtml = reader.ReadToEnd();
-                        rep.Close();
-                        return responseHtml;
+                        using (var reader = new StreamReader(stream, Encoding.UTF8))
+                        {
+                            string responseHtml = reader.ReadToEnd();
+                            rep.Close();
+                            result = responseHtml;
+                        }
                     }
-                rep.Close();
-                return null;//如果结果流为空，则返回为空
+                }
+                else
+                {
+                    rep.Close();
+                    result = "";
+                }
+                return result;//如果结果流为空，则返回为空
             }
             catch (Exception exp)
             {
                 Loghelper.WriteErrorLog("请求失败", exp);
                 //var temp = exp.Message;
-                throw exp;//抛出异常
-                //return null;//未查询到数据时，404错误
+                //throw exp;//抛出异常
+                return "";//未查询到数据时，404错误
             }
             //return ErrorRestResult;
         }
@@ -146,7 +156,9 @@ namespace MonitorDataSys.UtilTool
             catch (Exception exp)
             {
                 Loghelper.WriteErrorLog("请求失败", exp);
-                throw exp;//抛出异常
+                //var temp = exp.Message;
+                //throw exp;//抛出异常
+                return null;//未查询到数据时，404错误
             }
         }
         /// <summary>

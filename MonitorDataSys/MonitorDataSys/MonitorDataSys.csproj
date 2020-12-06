@@ -129,6 +129,7 @@
     <Compile Include="UtilTool\DataConvert\JkDataConvert.cs" />
     <Compile Include="UtilTool\DBHelper.cs" />
     <Compile Include="UtilTool\DBType.cs" />
+    <Compile Include="UtilTool\IJobTool\LoadAreaPredictionJob.cs" />
     <Compile Include="UtilTool\IJobTool\LoadDayJob.cs" />
     <Compile Include="UtilTool\IJobTool\LoadHourJob.cs" />
     <Compile Include="UtilTool\Loghelper.cs" />

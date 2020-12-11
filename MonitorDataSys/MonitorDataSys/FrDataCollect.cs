@@ -48,6 +48,10 @@ namespace MonitorDataSys
         private CityMonitorDayRepository cmdr = null;
         private StationMonitorDayRepository smdr = null;
 
+        private AreaPredictionRepository apr = null;
+        private ProvincePredictionRepository ppr = null;
+        private CityPredictionRepository cpr = null;
+
         private readonly string hourCity = ConfigurationManager.AppSettings["hourCity"];
         private readonly string hourStation = ConfigurationManager.AppSettings["hourStation"];
         private readonly string dayCity = ConfigurationManager.AppSettings["dayCity"];
@@ -63,6 +67,11 @@ namespace MonitorDataSys
         private readonly string areaPredictionUrl = ConfigurationManager.AppSettings["areaPredictionUrl"];
         private readonly string provincePredictionUrl = ConfigurationManager.AppSettings["provincePredictionUrl"];
         private readonly string cityPredictionUrl = ConfigurationManager.AppSettings["cityPredictionUrl"];
+
+        private readonly string areaPredictionTableName = ConfigurationManager.AppSettings["areaPredictionTable"];
+        private readonly string provincePredictionTableName = ConfigurationManager.AppSettings["provincePredictionTable"];
+        private readonly string cityPredictionTableName = ConfigurationManager.AppSettings["cityPredictionTable"];
+
 
         private delegate void InvokeCallback(RichTextBox rtb, string msg, ColorEnum color = ColorEnum.Green);
 
@@ -298,7 +307,6 @@ namespace MonitorDataSys
             //    }
             //});
             #endregion
-
             try
             {
                 setControlStatus(false);
@@ -364,13 +372,15 @@ namespace MonitorDataSys
                                             .Build();
                 dayTriggerList.Add(dayTrigger);
                 dictionary.Add(dayJob, dayTriggerList);
+                #endregion
 
+                #region 国家预报数据定时器
                 Quartz.Collection.ISet<ITrigger> areaPredictionTriggerList = new Quartz.Collection.HashSet<ITrigger>();
                 IJobDetail areaPredictionJob = JobBuilder.Create<LoadAreaPredictionJob>().WithIdentity("areaPredictionJob", groupName).UsingJobData("key", "value").Build();
                 ITrigger areaPredictionTrigger = TriggerBuilder.Create()
                                             .WithIdentity("areaPredictionTiger", groupName)
                                             .StartNow()
-                                             .WithCronSchedule("0 0 0/" + nuD_day_Day.Value + " * * ? *")
+                                           .WithCronSchedule("0 0 0/" + nuD_day_Day.Value + " * * ? *")
                                             //.WithCronSchedule("0 0/" + nuD_day_Day.Value + " * * * ?")
                                             .Build();
                 areaPredictionTriggerList.Add(areaPredictionTrigger);
@@ -442,6 +452,10 @@ namespace MonitorDataSys
                     smhr = new StationMonitorHourRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                     cmdr = new CityMonitorDayRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                     smdr = new StationMonitorDayRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
+
+                    apr = new AreaPredictionRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
+                    ppr = new ProvincePredictionRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
+                    cpr = new CityPredictionRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                 }
             }
             catch (Exception e)
@@ -1066,7 +1080,7 @@ namespace MonitorDataSys
         /// <summary>
         /// 采集国家环境监测总站区域预报数据
         /// </summary>
-        public void collectAreaPrediction()
+        public async Task collectAreaPrediction()
         {
             #region 区域预报
             try
@@ -1079,7 +1093,7 @@ namespace MonitorDataSys
                 DataTable areaTable = napr.NationAreaInfoQuery();
                 if (areaTable != null && areaTable.Rows.Count > 0)
                 {
-                    List<AreaPrediction> list = new List<AreaPrediction>();
+                    List<JObject> list = new List<JObject>();
                     for (int i = 0; i < areaTable.Rows.Count; i++)
                     {
                         AreaPrediction areaPrediction = new AreaPrediction();
@@ -1092,16 +1106,20 @@ namespace MonitorDataSys
                             if (!String.IsNullOrEmpty(resultAreaStr))
                             {
                                 areaPrediction = JsonConvert.DeserializeObject<AreaPrediction>(resultAreaStr);
-                                bool isCompeletCollect = false;
+                                bool isCompeletCollect = apr.IsCompeletCollect(areaPredictionTableName, areaCode, areaPrediction.PublishDate);
                                 if (!isCompeletCollect)
                                 {
-                                    list.Add(areaPrediction);
+                                    JObject item = new JObject();
+                                    item["CONTENT"] = areaPrediction.ForecastDescription;
+                                    item["REGION_CODE"] = areaPrediction.AreaCode;
+                                    item["WARN_TIME"] = areaPrediction.PublishDate;
+                                    list.Add(item);
                                 }
                             }
                             else
                             {
                                 //请先进性站点同步
-                                writeLog(rtb_AreaPrediction_Log,"<请先完善全国区域基本信息，然后再进行采集。", ColorEnum.Orange);
+                                writeLog(rtb_AreaPrediction_Log, "<请先完善全国区域基本信息，然后再进行采集。", ColorEnum.Orange);
                             }
                         }
                         catch (Exception ex)
@@ -1113,6 +1131,20 @@ namespace MonitorDataSys
                     if (list.Count > 0)
                     {
 
+                        bool areaPredictionInsertResult = apr.AddDataInfo(areaPredictionTableName, list);
+                        if (areaPredictionInsertResult)
+                        {
+                            collectTotal += list.Count;
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_AreaPrediction_Log, "<" + areaTable.Rows.Count + "个区域>区域预报数据采集成功，本次采集" + list.Count + "条数据", ColorEnum.Green);
+                            lr.AddLogInfo(areaTable.Rows.Count + "个区域，区域预报数据采集成功，本次采集" + list.Count + "条数据", "", areaPredictionTableName, "Info");
+                        }
+                        else
+                        {
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_AreaPrediction_Log, "<" + areaTable.Rows.Count + "个区域>区域预报数据采集失败，应该采集" + list.Count + "条数据", ColorEnum.Red);
+                            lr.AddLogInfo(areaTable.Rows.Count + "个区域，区域预报数据采集失败，应该采集" + list.Count + "条数据", "", areaPredictionTableName, "Error");
+                        }
                     }
                     else
                     {
@@ -1142,7 +1174,7 @@ namespace MonitorDataSys
         /// <summary>
         /// 采集国家环境监测总站省域预报数据
         /// </summary>
-        public void collectProvincePrediction()
+        public async Task collectProvincePrediction()
         {
             #region 省域预报
             try
@@ -1157,24 +1189,41 @@ namespace MonitorDataSys
                 string resultProvinceStr = SendHelper.SendPost(provinceUrl);
                 if (!String.IsNullOrEmpty(resultProvinceStr))
                 {
-                    List<ProvincePrediction> list = new List<ProvincePrediction>();
+                    List<JObject> list = new List<JObject>();
                     List<ProvincePrediction> provinceList = JsonConvert.DeserializeObject<List<ProvincePrediction>>(resultProvinceStr);
                     for (int i = 0; i < provinceList.Count; i++)
                     {
-                        bool isCompeletCollect = false;
+                        bool isCompeletCollect = ppr.IsCompeletCollect(provincePredictionTableName, provinceList[i].ProvinceCode, provinceList[i].PublishDate);
                         if (!isCompeletCollect)
                         {
-                            list.Add(provinceList[i]);
+                            JObject item = new JObject();
+                            item["AREA"] = provinceList[i].ProvinceCode;
+                            item["PREDICTION_INFO"] = provinceList[i].ForecastDescription;
+                            item["PREDICT_TIME"] = provinceList[i].PublishDate;
+                            list.Add(item);
                         }
                     }
                     if (list.Count > 0)
                     {
-
+                        bool provincePredictionInsertResult = apr.AddDataInfo(provincePredictionTableName, list);
+                        if (provincePredictionInsertResult)
+                        {
+                            collectTotal += list.Count;
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_AreaPrediction_Log, "<" + provinceList.Count + "个省域>省域预报数据采集成功，本次采集" + list.Count + "条数据", ColorEnum.Green);
+                            lr.AddLogInfo(provinceList.Count + "个省域，省域预报数据采集成功，本次采集" + list.Count + "条数据", "", provincePredictionTableName, "Info");
+                        }
+                        else
+                        {
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_AreaPrediction_Log, "<" + provinceList.Count + "个省域>省域预报数据采集成功，应该采集" + list.Count + "条数据", ColorEnum.Red);
+                            lr.AddLogInfo(provinceList.Count + "个省域，省域预报数据采集失败，应该采集" + list.Count + "条数据", "", provincePredictionTableName, "Error");
+                        }
                     }
                     else
                     {
                         //在SQLite表中录入当前采集条数
-                        writeLog(rtb_AreaPrediction_Log,"暂无要采集省域预报数据", ColorEnum.Orange);
+                        writeLog(rtb_AreaPrediction_Log, "暂无要采集省域预报数据", ColorEnum.Orange);
                     }
                 }
                 else
@@ -1198,7 +1247,7 @@ namespace MonitorDataSys
         /// <summary>
         /// 采集国家环境监测总站城市预报数据
         /// </summary>
-        public void collectCityPrediction()
+        public async Task collectCityPrediction()
         {
             #region 城市预报
             try
@@ -1219,24 +1268,111 @@ namespace MonitorDataSys
                     string[] sArray = Regex.Split(ele.ElementAt(0).Data, "var", RegexOptions.IgnoreCase);
                     String cityData = sArray[3].Replace("\n", "").Replace("\t", "").Replace("\r", "");
                     cityData = cityData.Substring(cityData.IndexOf("[") + 1, cityData.IndexOf("]") + 1).Replace("][0],", "");
-                    List<CityPrediction> list = new List<CityPrediction>();
+                    List<JObject> list = new List<JObject>();
                     List<CityPrediction> cityList = JsonConvert.DeserializeObject<List<CityPrediction>>(cityData);
                     for (int i = 0; i < cityList.Count; i++)
                     {
                         bool isCompeletCollect = false;
                         if (!isCompeletCollect)
                         {
-                            list.Add(cityList[i]);
+                            DateTime publihsTime = DateTime.Now;
+                            if (publihsTime.Hour >= 15) 
+                            {
+                                publihsTime = publihsTime.AddDays(1);
+                            }
+                            JObject item1 = new JObject();
+                            item1["PUBLISH_TIME"] = publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00");
+                            item1["REGION_CODE"] = cityList[i].CityCode;
+                            item1["REGION_NAME"] = cityList[i].Name;
+                            item1["PREDICT_TIME"] = publihsTime.ToString("yyyy-MM-dd 00:00:00.00");
+                            item1["AQI_MIN"] = (String.IsNullOrEmpty(cityList[i].AirIndex_From) ? "-1" : cityList[i].AirIndex_From);
+                            item1["AQI_LEVEL_MIN"] = (String.IsNullOrEmpty(cityList[i].AirIndex_From) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].AirIndex_From))));
+                            item1["PRIMARY_POLLUTE"] = cityList[i].PrimaryPollutant;
+                            item1["AQI_MAX"] = (String.IsNullOrEmpty(cityList[i].AirIndex_To) ? "-1" : cityList[i].AirIndex_To);
+                            item1["AQI_LEVEL_MAX"] = (String.IsNullOrEmpty(cityList[i].AirIndex_To) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].AirIndex_To))));
+                            item1["PREDICTION_INTERVAL"] = 1;
+                            item1["POTENTIAL_ANALYSIS"] = cityList[i].DetailInfo;
+                            list.Add(item1);
+
+                            JObject item2 = new JObject();
+                            item2["PUBLISH_TIME"] = publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00");
+                            item2["REGION_CODE"] = cityList[i].CityCode;
+                            item2["REGION_NAME"] = cityList[i].Name;
+                            item2["PREDICT_TIME"] = publihsTime.AddDays(1).ToString("yyyy-MM-dd 00:00:00.00");
+                            item2["AQI_MIN"] = (String.IsNullOrEmpty(cityList[i].Air48Index_From) ? "-1" : cityList[i].Air48Index_From);
+                            item2["AQI_LEVEL_MIN"] = (String.IsNullOrEmpty(cityList[i].Air48Index_From) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air48Index_From))));
+                            item2["PRIMARY_POLLUTE"] = cityList[i].Primary48Pollutant;
+                            item2["AQI_MAX"] = (String.IsNullOrEmpty(cityList[i].Air48Index_To) ? "-1" : cityList[i].Air48Index_To);
+                            item2["AQI_LEVEL_MAX"] = (String.IsNullOrEmpty(cityList[i].Air48Index_To) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air48Index_To))));
+                            item2["PREDICTION_INTERVAL"] = 2;
+                            item2["POTENTIAL_ANALYSIS"] = cityList[i].DetailInfo;
+                            list.Add(item2);
+
+                            JObject item3 = new JObject();
+                            item3["PUBLISH_TIME"] = publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00");
+                            item3["REGION_CODE"] = cityList[i].CityCode;
+                            item3["REGION_NAME"] = cityList[i].Name;
+                            item3["PREDICT_TIME"] = publihsTime.AddDays(2).ToString("yyyy-MM-dd 00:00:00.00");
+                            item3["AQI_MIN"] = (String.IsNullOrEmpty(cityList[i].Air72Index_From) ? "-1" : cityList[i].Air72Index_From);
+                            item3["AQI_LEVEL_MIN"] = (String.IsNullOrEmpty(cityList[i].Air72Index_From) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air72Index_From))));
+                            item3["PRIMARY_POLLUTE"] = cityList[i].Primary72Pollutant;
+                            item3["AQI_MAX"] = (String.IsNullOrEmpty(cityList[i].Air72Index_To) ? "-1" : cityList[i].Air72Index_To);
+                            item3["AQI_LEVEL_MAX"] = (String.IsNullOrEmpty(cityList[i].Air72Index_To) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air72Index_To))));
+                            item3["PREDICTION_INTERVAL"] = 3;
+                            item3["POTENTIAL_ANALYSIS"] = cityList[i].DetailInfo;
+                            list.Add(item3);
+
+                            JObject item4 = new JObject();
+                            item4["PUBLISH_TIME"] = publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00");
+                            item4["REGION_CODE"] = cityList[i].CityCode;
+                            item4["REGION_NAME"] = cityList[i].Name;
+                            item4["PREDICT_TIME"] = publihsTime.AddDays(3).ToString("yyyy-MM-dd 00:00:00.00");
+                            item4["AQI_MIN"] = (String.IsNullOrEmpty(cityList[i].Air96Index_From) ? "-1" : cityList[i].Air96Index_From);
+                            item4["AQI_LEVEL_MIN"] = (String.IsNullOrEmpty(cityList[i].Air96Index_From) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air96Index_From))));
+                            item4["PRIMARY_POLLUTE"] = cityList[i].Primary96Pollutant;
+                            item4["AQI_MAX"] = (String.IsNullOrEmpty(cityList[i].Air96Index_To) ? "-1" : cityList[i].Air96Index_To);
+                            item4["AQI_LEVEL_MAX"] = (String.IsNullOrEmpty(cityList[i].Air96Index_To) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air96Index_To))));
+                            item4["PREDICTION_INTERVAL"] = 4;
+                            item4["POTENTIAL_ANALYSIS"] = cityList[i].DetailInfo;
+                            list.Add(item4);
+
+                            JObject item5 = new JObject();
+                            item5["PUBLISH_TIME"] = publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00");
+                            item5["REGION_CODE"] = cityList[i].CityCode;
+                            item5["REGION_NAME"] = cityList[i].Name;
+                            item5["PREDICT_TIME"] = publihsTime.AddDays(4).ToString("yyyy-MM-dd 00:00:00.00");
+                            item5["AQI_MIN"] = (String.IsNullOrEmpty(cityList[i].Air120Index_From) ? "-1" : cityList[i].Air120Index_From);
+                            item5["AQI_LEVEL_MIN"] = (String.IsNullOrEmpty(cityList[i].Air120Index_From) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air120Index_From))));
+                            item5["PRIMARY_POLLUTE"] = cityList[i].Primary120Pollutant;
+                            item5["AQI_MAX"] = (String.IsNullOrEmpty(cityList[i].Air120Index_To) ? "-1" : cityList[i].Air120Index_To);
+                            item5["AQI_LEVEL_MAX"] = (String.IsNullOrEmpty(cityList[i].Air120Index_To) ? "-1" : Utility.AQILevelCovertInt(Utility.GetPollutantLevel(Int32.Parse(cityList[i].Air120Index_To))));
+                            item5["PREDICTION_INTERVAL"] = 5;
+                            item5["POTENTIAL_ANALYSIS"] = cityList[i].DetailInfo;
+                            list.Add(item5);
+
                         }
                     }
                     if (list.Count > 0)
                     {
-
+                        bool cityPredictionInsertResult = cpr.AddDataInfo(cityPredictionTableName, list);
+                        if (cityPredictionInsertResult)
+                        {
+                            collectTotal += list.Count;
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_AreaPrediction_Log, "<" + list.Count + "个城市>城市预报数据采集成功，本次采集" + list.Count + "条数据", ColorEnum.Green);
+                            lr.AddLogInfo(list.Count + "个城市，城市预报数据采集成功，本次采集" + list.Count + "条数据", "", cityPredictionTableName, "Info");
+                        }
+                        else
+                        {
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_AreaPrediction_Log, "<" + list.Count + "个城市>城市预报数据采集失败，应该采集" + list.Count + "条数据", ColorEnum.Red);
+                            lr.AddLogInfo(list.Count + "个城市，城市预报数据采集失败，应该采集" + list.Count + "条数据", "", cityPredictionTableName, "Error");
+                        }
                     }
                     else
                     {
                         //在SQLite表中录入当前采集条数
-                        writeLog(rtb_AreaPrediction_Log,"暂无要采集城市预报数据", ColorEnum.Orange);
+                        writeLog(rtb_AreaPrediction_Log, "暂无要采集城市预报数据", ColorEnum.Orange);
                     }
                 }
                 else

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.Repository.bzk
 {
-    public class AreaPredictionRepository
+    public class CityPredictionRepository
     {
         private readonly LogRepository lr = new LogRepository();
 
@@ -22,7 +22,7 @@ namespace MonitorDataSys.Repository.bzk
         /// <summary>
         /// 构造函数用于定位当前数据库 和初始化数据库连接设置
         /// </summary>
-        public AreaPredictionRepository(string bzkSQLServerDbServerIP, string bzkSQLServerDbServerPort, string bzkSQLServerDbServerUserId, string bzkSQLServerDbServerUserPassword, string bzkSQLServerProviderName, string bzkSQLServerDbName)
+        public CityPredictionRepository(string bzkSQLServerDbServerIP, string bzkSQLServerDbServerPort, string bzkSQLServerDbServerUserId, string bzkSQLServerDbServerUserPassword, string bzkSQLServerProviderName, string bzkSQLServerDbName)
         {
             this.dbHelper = new DBHelper();
             tempSQLCoonectStr = dbHelper.GetSQLConnection(bzkSQLServerDbServerIP, bzkSQLServerDbServerPort, bzkSQLServerDbServerUserId, bzkSQLServerDbServerUserPassword, bzkSQLServerProviderName, bzkSQLServerDbName);
@@ -32,14 +32,14 @@ namespace MonitorDataSys.Repository.bzk
         /// 查询数据表中最新数据时间
         /// </summary>
         /// <returns></returns>
-        public bool IsCompeletCollect(string tableName, string areaCode, DateTime monitorTime)
+        public bool IsCompeletCollect(string tableName, string areaCode, DateTime publishTime, DateTime predictTime)
         {
             bool result = false;
             try
             {
                 this.dbHelper = new DBHelper(tempSQLCoonectStr);
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("select * from {0} where 1=1 and REGION_CODE ='{1}' and WARN_TIME = '{2}' ", tableName, areaCode, monitorTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                sb.AppendFormat("select * from {0} where 1=1 and REGION_CODE ='{1}' and PUBLISH_TIME = '{2}' and PREDICT_TIME = '{3}' ", tableName, areaCode, publishTime.ToString("yyyy-MM-dd HH:mm:ss.fff"), predictTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                 string sql = SQLUtils.genarateSQL(sb.ToString(), this.dbHelper.sqlConnectionType);
                 DataSet datasetTemp = dbHelper.DataAdapter(CommandType.Text, sql);
                 if (datasetTemp != null)

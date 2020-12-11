@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.Repository.bzk
 {
-    public class AreaPredictionRepository
+    public class ProvincePredictionRepository
     {
         private readonly LogRepository lr = new LogRepository();
 
@@ -22,7 +22,7 @@ namespace MonitorDataSys.Repository.bzk
         /// <summary>
         /// 构造函数用于定位当前数据库 和初始化数据库连接设置
         /// </summary>
-        public AreaPredictionRepository(string bzkSQLServerDbServerIP, string bzkSQLServerDbServerPort, string bzkSQLServerDbServerUserId, string bzkSQLServerDbServerUserPassword, string bzkSQLServerProviderName, string bzkSQLServerDbName)
+        public ProvincePredictionRepository(string bzkSQLServerDbServerIP, string bzkSQLServerDbServerPort, string bzkSQLServerDbServerUserId, string bzkSQLServerDbServerUserPassword, string bzkSQLServerProviderName, string bzkSQLServerDbName)
         {
             this.dbHelper = new DBHelper();
             tempSQLCoonectStr = dbHelper.GetSQLConnection(bzkSQLServerDbServerIP, bzkSQLServerDbServerPort, bzkSQLServerDbServerUserId, bzkSQLServerDbServerUserPassword, bzkSQLServerProviderName, bzkSQLServerDbName);
@@ -39,7 +39,7 @@ namespace MonitorDataSys.Repository.bzk
             {
                 this.dbHelper = new DBHelper(tempSQLCoonectStr);
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("select * from {0} where 1=1 and REGION_CODE ='{1}' and WARN_TIME = '{2}' ", tableName, areaCode, monitorTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                sb.AppendFormat("select * from {0} where 1=1 and AREA ='{1}' and PREDICT_TIME = '{2}' ", tableName, areaCode, monitorTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                 string sql = SQLUtils.genarateSQL(sb.ToString(), this.dbHelper.sqlConnectionType);
                 DataSet datasetTemp = dbHelper.DataAdapter(CommandType.Text, sql);
                 if (datasetTemp != null)

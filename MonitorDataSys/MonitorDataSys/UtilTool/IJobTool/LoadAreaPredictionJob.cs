@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.UtilTool.IJobTool
 {
-    
+
+
+    /// <summary>
+    /// 国家区域预报数据
+    /// </summary>
     public class LoadAreaPredictionJob : IJob
     {
         private readonly LogRepository lr = new LogRepository();
@@ -25,13 +29,16 @@ namespace MonitorDataSys.UtilTool.IJobTool
                   {
                       JobDataMap dataMap = context.JobDetail.JobDataMap;
                       string key = dataMap.GetString("key");//获取参数
-                }
+                      await FrDataCollect.frDataCollect.collectAreaPrediction();
+                      await FrDataCollect.frDataCollect.collectProvincePrediction();
+                      await FrDataCollect.frDataCollect.collectCityPrediction();
+                  }
                   catch (Exception e)
                   {
                       Loghelper.WriteErrorLog("定时任务调用窗体函数采集数据失败", e);
                       lr.AddLogInfo(e.ToString(), "定时任务调用窗体函数采集数据失败", "定时任务调用窗体函数采集数据失败", "Error");
-                    //throw e;
-                }
+                      //throw e;
+                  }
               });
         }
     }

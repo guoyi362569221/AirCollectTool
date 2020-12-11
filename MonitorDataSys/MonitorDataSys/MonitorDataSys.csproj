@@ -114,6 +114,8 @@
     <Compile Include="Models\NationPrediction\ProvincePrediction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\bzk\CityPredictionRepository.cs" />
+    <Compile Include="Repository\bzk\ProvincePredictionRepository.cs" />
     <Compile Include="Repository\bzk\AreaPredictionRepository.cs" />
     <Compile Include="Repository\bzk\CityMonitorDayRepository.cs" />
     <Compile Include="Repository\bzk\CityMonitorHourRepository.cs" />

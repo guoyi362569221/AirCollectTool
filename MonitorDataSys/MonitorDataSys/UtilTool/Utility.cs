@@ -13,22 +13,22 @@ namespace MonitorDataSys.UtilTool
     {
         private static readonly string noDataValue = ConfigurationManager.AppSettings["noDataValue"];
         private static readonly string aqiLevelFormat = ConfigurationManager.AppSettings["aqiLevelFormat"];
-        
 
-        public static string ConvertValueOrgin(string value) 
+
+        public static string ConvertValueOrgin(string value)
         {
             string result = value;
-            if (String.IsNullOrEmpty(value) || value == "—") 
+            if (String.IsNullOrEmpty(value) || value == "—")
             {
                 value = noDataValue;
             }
             return value;
         }
 
-        public static string AQILevelCovertInt(string aqiLevel) 
+        public static string AQILevelCovertInt(string aqiLevel)
         {
             string aqlLevelInt = aqiLevel;
-            if (aqiLevelFormat == "int") 
+            if (aqiLevelFormat == "int")
             {
                 switch (aqiLevel)
                 {
@@ -53,6 +53,46 @@ namespace MonitorDataSys.UtilTool
                 }
             }
             return aqlLevelInt;
+        }
+
+        /// <summary>
+        /// 通过AQI值读取AQI的等级
+        /// </summary>
+        /// <param name="aqi">AQI值</param>
+        /// <returns>level</returns>
+        public static string GetPollutantLevel(int aqi)
+        {
+            string level = "-";
+            if (aqi == null || aqi == -999)
+            {
+                level = "-";
+            }
+            else if (aqi <= 50 && aqi >= 0)
+            {
+                level = "优";
+            }
+            else if (aqi > 50 && aqi <= 100)
+            {
+                level = "良";
+            }
+            else if (aqi > 100 && aqi <= 150)
+            {
+                level = "轻度污染";
+            }
+            else if (aqi > 150 && aqi <= 200)
+            {
+                level = "中度污染";
+            }
+            else if (aqi > 200 && aqi <= 300)
+            {
+                level = "重度污染";
+            }
+            else
+            {
+                level = "严重污染";
+            }
+
+            return level;
         }
 
         public static string ConvertFieldValue(string fieldNames, string str = "'")
@@ -251,7 +291,7 @@ namespace MonitorDataSys.UtilTool
         /// <returns></returns>
         [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
         public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
-        
+
         /// <summary>
         /// 释放内存
         /// </summary>
@@ -266,7 +306,7 @@ namespace MonitorDataSys.UtilTool
                     SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Loghelper.WriteErrorLog("内存回收，释放内存失败", e);
             }

@@ -154,6 +154,8 @@ namespace MonitorDataSys
         /// <param name="e"></param>
         private void btn_Start_Click(object sender, EventArgs e)
         {
+            //AAA();
+
             #region 测试用例
             //Task.Run(() =>
             //{
@@ -398,6 +400,27 @@ namespace MonitorDataSys
                 Loghelper.WriteErrorLog("启动定时任务", ex);
                 lr.AddLogInfo(ex.ToString(), "启动定时任务", "启动定时任务", "Error");
             }
+        }
+
+        public async Task AAA()
+        {
+            DateTime startTime = DateTime.Parse("2020-01-01 00:00:00");
+            DateTime endTime = DateTime.Parse("2020-01-05 00:00:00");
+            EnvCnemcPublishDomainContext publishCtx = new EnvCnemcPublishDomainContext(XAP_URL);
+            //EntityQuery<CityDayAQIPublishHistory> cityAQILiveData = publishCtx.GetCityDayAQIPublishHistoriesQuery()
+            //                                               .Where(x => x.Area == "兰州市")
+            //                                               .Where(x => x.TimePoint >= startTime && x.TimePoint <= endTime)
+            //                                               .OrderBy(x => x.TimePoint); ;
+
+            //IEnumerable<CityDayAQIPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(cityAQILiveData).ResultAsync();
+
+            EntityQuery<IAQIDataPublishHistory> cityAQILiveData = publishCtx.GetIAQIDataPublishHistoriesQuery()
+                                                           .Where(x => x.Area == "兰州市")
+                                                           .Where(x => x.TimePoint >= startTime && x.TimePoint <= endTime)
+                                                           .OrderBy(x => x.TimePoint); ;
+            IEnumerable<IAQIDataPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(cityAQILiveData).ResultAsync();
+
+
         }
 
         /// <summary>
@@ -1276,7 +1299,7 @@ namespace MonitorDataSys
                         if (!isCompeletCollect)
                         {
                             DateTime publihsTime = DateTime.Now;
-                            if (publihsTime.Hour >= 15) 
+                            if (publihsTime.Hour >= 15)
                             {
                                 publihsTime = publihsTime.AddDays(1);
                             }

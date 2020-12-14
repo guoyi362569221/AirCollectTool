@@ -24,8 +24,8 @@ namespace MonitorDataSys.Repository.bzk
         /// </summary>
         public CityPredictionRepository(string bzkSQLServerDbServerIP, string bzkSQLServerDbServerPort, string bzkSQLServerDbServerUserId, string bzkSQLServerDbServerUserPassword, string bzkSQLServerProviderName, string bzkSQLServerDbName)
         {
-            this.dbHelper = new DBHelper();
             tempSQLCoonectStr = dbHelper.GetSQLConnection(bzkSQLServerDbServerIP, bzkSQLServerDbServerPort, bzkSQLServerDbServerUserId, bzkSQLServerDbServerUserPassword, bzkSQLServerProviderName, bzkSQLServerDbName);
+            this.dbHelper = new DBHelper(tempSQLCoonectStr);
         }
 
         /// <summary>

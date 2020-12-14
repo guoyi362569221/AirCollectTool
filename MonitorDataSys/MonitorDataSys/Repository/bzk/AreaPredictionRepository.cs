@@ -15,7 +15,7 @@ namespace MonitorDataSys.Repository.bzk
     {
         private readonly LogRepository lr = new LogRepository();
 
-        private DBHelper dbHelper;
+        private DBHelper dbHelper = new DBHelper();
 
         private ConnectionStringSettings tempSQLCoonectStr = new ConnectionStringSettings();
 

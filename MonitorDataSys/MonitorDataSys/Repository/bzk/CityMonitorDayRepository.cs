@@ -15,7 +15,7 @@ namespace MonitorDataSys.Repository.bzk
     {
         private readonly LogRepository lr = new LogRepository();
 
-        private DBHelper dbHelper;
+        private DBHelper dbHelper = new DBHelper();
 
         private ConnectionStringSettings tempSQLCoonectStr = new ConnectionStringSettings();
 
@@ -24,8 +24,8 @@ namespace MonitorDataSys.Repository.bzk
         /// </summary>
         public CityMonitorDayRepository(string bzkSQLServerDbServerIP, string bzkSQLServerDbServerPort, string bzkSQLServerDbServerUserId, string bzkSQLServerDbServerUserPassword, string bzkSQLServerProviderName, string bzkSQLServerDbName)
         {
-            this.dbHelper = new DBHelper();
             tempSQLCoonectStr = dbHelper.GetSQLConnection(bzkSQLServerDbServerIP, bzkSQLServerDbServerPort, bzkSQLServerDbServerUserId, bzkSQLServerDbServerUserPassword, bzkSQLServerProviderName, bzkSQLServerDbName);
+            this.dbHelper = new DBHelper(tempSQLCoonectStr);
         }
 
         /// <summary>

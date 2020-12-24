@@ -121,12 +121,14 @@
     <Compile Include="Repository\bzk\CityMonitorHourRepository.cs" />
     <Compile Include="Repository\bzk\StationMonitorDayRepository.cs" />
     <Compile Include="Repository\bzk\StationMonitorHourRepository.cs" />
+    <Compile Include="Repository\bzk\WeatherStationHourRepository.cs" />
     <Compile Include="Repository\local\AirStationRepository.cs" />
     <Compile Include="Repository\local\AreaRepository.cs" />
     <Compile Include="Repository\local\CollectStaticRepository.cs" />
     <Compile Include="Repository\local\DataConfigRepository.cs" />
     <Compile Include="Repository\local\LogRepository.cs" />
     <Compile Include="Repository\local\NationAreaPreditionRepository.cs" />
+    <Compile Include="Repository\local\WeatherStationRepository.cs" />
     <Compile Include="UtilTool\DataConvert\HcDataConvert.cs" />
     <Compile Include="UtilTool\DataConvert\JkDataConvert.cs" />
     <Compile Include="UtilTool\DBHelper.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="UtilTool\SQLConnectionType.cs" />
     <Compile Include="UtilTool\SQLiteHelper.cs" />
     <Compile Include="UtilTool\Utility.cs" />
+    <Compile Include="UtilTool\ZipHelper.cs" />
     <EmbeddedResource Include="FrAboutAs.resx">
       <DependentUpon>FrAboutAs.cs</DependentUpon>
     </EmbeddedResource>

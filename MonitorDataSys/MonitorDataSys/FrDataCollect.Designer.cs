@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.tabMenu = new System.Windows.Forms.TabControl();
+            this.tab_Hour = new System.Windows.Forms.TabPage();
+            this.rtb_Hour_Log = new System.Windows.Forms.RichTextBox();
+            this.tab_Day = new System.Windows.Forms.TabPage();
+            this.rtb_Day_Log = new System.Windows.Forms.RichTextBox();
+            this.tab_AreaPrediction = new System.Windows.Forms.TabPage();
+            this.rtb_AreaPrediction_Log = new System.Windows.Forms.RichTextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.nuD_day_Day = new System.Windows.Forms.NumericUpDown();
             this.nuD_min_Hour = new System.Windows.Forms.NumericUpDown();
@@ -42,22 +49,18 @@
             this.lb_NextTime = new System.Windows.Forms.Label();
             this.lb_AllTotal = new System.Windows.Forms.Label();
             this.lb_TodayTotal = new System.Windows.Forms.Label();
-            this.tab_Day = new System.Windows.Forms.TabPage();
-            this.tab_Hour = new System.Windows.Forms.TabPage();
-            this.tabMenu = new System.Windows.Forms.TabControl();
-            this.rtb_Hour_Log = new System.Windows.Forms.RichTextBox();
-            this.rtb_Day_Log = new System.Windows.Forms.RichTextBox();
-            this.tab_AreaPrediction = new System.Windows.Forms.TabPage();
-            this.rtb_AreaPrediction_Log = new System.Windows.Forms.RichTextBox();
+            this.tab_WeatherHour = new System.Windows.Forms.TabPage();
+            this.rtb_WeatherHour_Log = new System.Windows.Forms.RichTextBox();
             this.groupBox4.SuspendLayout();
+            this.tabMenu.SuspendLayout();
+            this.tab_Hour.SuspendLayout();
+            this.tab_Day.SuspendLayout();
+            this.tab_AreaPrediction.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuD_day_Day)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nuD_min_Hour)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.tab_Day.SuspendLayout();
-            this.tab_Hour.SuspendLayout();
-            this.tabMenu.SuspendLayout();
-            this.tab_AreaPrediction.SuspendLayout();
+            this.tab_WeatherHour.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox4
@@ -69,6 +72,82 @@
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "数据记录";
+            // 
+            // tabMenu
+            // 
+            this.tabMenu.Controls.Add(this.tab_Hour);
+            this.tabMenu.Controls.Add(this.tab_Day);
+            this.tabMenu.Controls.Add(this.tab_AreaPrediction);
+            this.tabMenu.Controls.Add(this.tab_WeatherHour);
+            this.tabMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabMenu.Location = new System.Drawing.Point(3, 17);
+            this.tabMenu.Name = "tabMenu";
+            this.tabMenu.SelectedIndex = 0;
+            this.tabMenu.Size = new System.Drawing.Size(659, 238);
+            this.tabMenu.TabIndex = 1;
+            // 
+            // tab_Hour
+            // 
+            this.tab_Hour.Controls.Add(this.rtb_Hour_Log);
+            this.tab_Hour.Location = new System.Drawing.Point(4, 22);
+            this.tab_Hour.Name = "tab_Hour";
+            this.tab_Hour.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_Hour.Size = new System.Drawing.Size(651, 212);
+            this.tab_Hour.TabIndex = 0;
+            this.tab_Hour.Text = "国控小时记录";
+            this.tab_Hour.UseVisualStyleBackColor = true;
+            // 
+            // rtb_Hour_Log
+            // 
+            this.rtb_Hour_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb_Hour_Log.Location = new System.Drawing.Point(3, 3);
+            this.rtb_Hour_Log.Name = "rtb_Hour_Log";
+            this.rtb_Hour_Log.ReadOnly = true;
+            this.rtb_Hour_Log.Size = new System.Drawing.Size(645, 206);
+            this.rtb_Hour_Log.TabIndex = 4;
+            this.rtb_Hour_Log.Text = "";
+            // 
+            // tab_Day
+            // 
+            this.tab_Day.Controls.Add(this.rtb_Day_Log);
+            this.tab_Day.Location = new System.Drawing.Point(4, 22);
+            this.tab_Day.Name = "tab_Day";
+            this.tab_Day.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_Day.Size = new System.Drawing.Size(651, 212);
+            this.tab_Day.TabIndex = 1;
+            this.tab_Day.Text = "国控日均记录";
+            this.tab_Day.UseVisualStyleBackColor = true;
+            // 
+            // rtb_Day_Log
+            // 
+            this.rtb_Day_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb_Day_Log.Location = new System.Drawing.Point(3, 3);
+            this.rtb_Day_Log.Name = "rtb_Day_Log";
+            this.rtb_Day_Log.ReadOnly = true;
+            this.rtb_Day_Log.Size = new System.Drawing.Size(645, 206);
+            this.rtb_Day_Log.TabIndex = 5;
+            this.rtb_Day_Log.Text = "";
+            // 
+            // tab_AreaPrediction
+            // 
+            this.tab_AreaPrediction.Controls.Add(this.rtb_AreaPrediction_Log);
+            this.tab_AreaPrediction.Location = new System.Drawing.Point(4, 22);
+            this.tab_AreaPrediction.Name = "tab_AreaPrediction";
+            this.tab_AreaPrediction.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_AreaPrediction.Size = new System.Drawing.Size(651, 212);
+            this.tab_AreaPrediction.TabIndex = 2;
+            this.tab_AreaPrediction.Text = "区域预报记录";
+            this.tab_AreaPrediction.UseVisualStyleBackColor = true;
+            // 
+            // rtb_AreaPrediction_Log
+            // 
+            this.rtb_AreaPrediction_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb_AreaPrediction_Log.Location = new System.Drawing.Point(3, 3);
+            this.rtb_AreaPrediction_Log.Name = "rtb_AreaPrediction_Log";
+            this.rtb_AreaPrediction_Log.ReadOnly = true;
+            this.rtb_AreaPrediction_Log.Size = new System.Drawing.Size(645, 206);
+            this.rtb_AreaPrediction_Log.TabIndex = 6;
+            this.rtb_AreaPrediction_Log.Text = "";
             // 
             // groupBox3
             // 
@@ -234,80 +313,25 @@
             this.lb_TodayTotal.TabIndex = 0;
             this.lb_TodayTotal.Text = "今日采集：0条";
             // 
-            // tab_Day
+            // tab_WeatherHour
             // 
-            this.tab_Day.Controls.Add(this.rtb_Day_Log);
-            this.tab_Day.Location = new System.Drawing.Point(4, 22);
-            this.tab_Day.Name = "tab_Day";
-            this.tab_Day.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_Day.Size = new System.Drawing.Size(651, 212);
-            this.tab_Day.TabIndex = 1;
-            this.tab_Day.Text = "国控日均记录";
-            this.tab_Day.UseVisualStyleBackColor = true;
+            this.tab_WeatherHour.Controls.Add(this.rtb_WeatherHour_Log);
+            this.tab_WeatherHour.Location = new System.Drawing.Point(4, 22);
+            this.tab_WeatherHour.Name = "tab_WeatherHour";
+            this.tab_WeatherHour.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_WeatherHour.Size = new System.Drawing.Size(651, 212);
+            this.tab_WeatherHour.TabIndex = 3;
+            this.tab_WeatherHour.Text = "气象小时记录";
+            this.tab_WeatherHour.UseVisualStyleBackColor = true;
             // 
-            // tab_Hour
+            // rtb_WeatherHour_Log
             // 
-            this.tab_Hour.Controls.Add(this.rtb_Hour_Log);
-            this.tab_Hour.Location = new System.Drawing.Point(4, 22);
-            this.tab_Hour.Name = "tab_Hour";
-            this.tab_Hour.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_Hour.Size = new System.Drawing.Size(651, 212);
-            this.tab_Hour.TabIndex = 0;
-            this.tab_Hour.Text = "国控小时记录";
-            this.tab_Hour.UseVisualStyleBackColor = true;
-            // 
-            // tabMenu
-            // 
-            this.tabMenu.Controls.Add(this.tab_Hour);
-            this.tabMenu.Controls.Add(this.tab_Day);
-            this.tabMenu.Controls.Add(this.tab_AreaPrediction);
-            this.tabMenu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabMenu.Location = new System.Drawing.Point(3, 17);
-            this.tabMenu.Name = "tabMenu";
-            this.tabMenu.SelectedIndex = 0;
-            this.tabMenu.Size = new System.Drawing.Size(659, 238);
-            this.tabMenu.TabIndex = 1;
-            // 
-            // rtb_Hour_Log
-            // 
-            this.rtb_Hour_Log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtb_Hour_Log.Location = new System.Drawing.Point(3, 3);
-            this.rtb_Hour_Log.Name = "rtb_Hour_Log";
-            this.rtb_Hour_Log.ReadOnly = true;
-            this.rtb_Hour_Log.Size = new System.Drawing.Size(645, 206);
-            this.rtb_Hour_Log.TabIndex = 4;
-            this.rtb_Hour_Log.Text = "";
-            // 
-            // rtb_Day_Log
-            // 
-            this.rtb_Day_Log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtb_Day_Log.Location = new System.Drawing.Point(3, 3);
-            this.rtb_Day_Log.Name = "rtb_Day_Log";
-            this.rtb_Day_Log.ReadOnly = true;
-            this.rtb_Day_Log.Size = new System.Drawing.Size(645, 206);
-            this.rtb_Day_Log.TabIndex = 5;
-            this.rtb_Day_Log.Text = "";
-            // 
-            // tab_AreaPrediction
-            // 
-            this.tab_AreaPrediction.Controls.Add(this.rtb_AreaPrediction_Log);
-            this.tab_AreaPrediction.Location = new System.Drawing.Point(4, 22);
-            this.tab_AreaPrediction.Name = "tab_AreaPrediction";
-            this.tab_AreaPrediction.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_AreaPrediction.Size = new System.Drawing.Size(651, 212);
-            this.tab_AreaPrediction.TabIndex = 2;
-            this.tab_AreaPrediction.Text = "区域预报记录";
-            this.tab_AreaPrediction.UseVisualStyleBackColor = true;
-            // 
-            // rtb_AreaPrediction_Log
-            // 
-            this.rtb_AreaPrediction_Log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtb_AreaPrediction_Log.Location = new System.Drawing.Point(3, 3);
-            this.rtb_AreaPrediction_Log.Name = "rtb_AreaPrediction_Log";
-            this.rtb_AreaPrediction_Log.ReadOnly = true;
-            this.rtb_AreaPrediction_Log.Size = new System.Drawing.Size(645, 206);
-            this.rtb_AreaPrediction_Log.TabIndex = 6;
-            this.rtb_AreaPrediction_Log.Text = "";
+            this.rtb_WeatherHour_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb_WeatherHour_Log.Location = new System.Drawing.Point(3, 3);
+            this.rtb_WeatherHour_Log.Name = "rtb_WeatherHour_Log";
+            this.rtb_WeatherHour_Log.Size = new System.Drawing.Size(645, 206);
+            this.rtb_WeatherHour_Log.TabIndex = 0;
+            this.rtb_WeatherHour_Log.Text = "";
             // 
             // FrDataCollect
             // 
@@ -322,16 +346,17 @@
             this.Text = "FrDataCollect";
             this.Load += new System.EventHandler(this.FrDataCollect_Load);
             this.groupBox4.ResumeLayout(false);
+            this.tabMenu.ResumeLayout(false);
+            this.tab_Hour.ResumeLayout(false);
+            this.tab_Day.ResumeLayout(false);
+            this.tab_AreaPrediction.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuD_day_Day)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nuD_min_Hour)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tab_Day.ResumeLayout(false);
-            this.tab_Hour.ResumeLayout(false);
-            this.tabMenu.ResumeLayout(false);
-            this.tab_AreaPrediction.ResumeLayout(false);
+            this.tab_WeatherHour.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -359,5 +384,7 @@
         private System.Windows.Forms.RichTextBox rtb_Day_Log;
         private System.Windows.Forms.TabPage tab_AreaPrediction;
         private System.Windows.Forms.RichTextBox rtb_AreaPrediction_Log;
+        private System.Windows.Forms.TabPage tab_WeatherHour;
+        private System.Windows.Forms.RichTextBox rtb_WeatherHour_Log;
     }
 }

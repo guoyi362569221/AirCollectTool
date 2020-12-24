@@ -19,8 +19,6 @@ using Com.Hzexe.Air.OpenAirLibrary;
 using OpenRiaServices.DomainServices.Client;
 using System.Linq;
 using MonitorDataSys.Repository.bzk;
-using System.Threading;
-using System.ComponentModel;
 using System.Net;
 using System.Text;
 using NSoup.Select;
@@ -28,6 +26,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using MonitorDataSys.Models.NationPredict;
 using MonitorDataSys.Models.NationPrediction;
+using System.IO;
 
 namespace MonitorDataSys
 {
@@ -43,6 +42,7 @@ namespace MonitorDataSys
         private readonly CollectStaticRepository cst = new CollectStaticRepository();
         private readonly LogRepository lr = new LogRepository();
         private readonly NationAreaPreditionRepository napr = new NationAreaPreditionRepository();
+        private readonly WeatherStationRepository wst = new WeatherStationRepository();
         private CityMonitorHourRepository cmhr = null;
         private StationMonitorHourRepository smhr = null;
         private CityMonitorDayRepository cmdr = null;
@@ -51,6 +51,8 @@ namespace MonitorDataSys
         private AreaPredictionRepository apr = null;
         private ProvincePredictionRepository ppr = null;
         private CityPredictionRepository cpr = null;
+
+        private WeatherStationHourRepository wshr = null;
 
         private readonly string hourCity = ConfigurationManager.AppSettings["hourCity"];
         private readonly string hourStation = ConfigurationManager.AppSettings["hourStation"];
@@ -72,6 +74,8 @@ namespace MonitorDataSys
         private readonly string provincePredictionTableName = ConfigurationManager.AppSettings["provincePredictionTable"];
         private readonly string cityPredictionTableName = ConfigurationManager.AppSettings["cityPredictionTable"];
 
+        private readonly string weatherServerUrl = ConfigurationManager.AppSettings["weatherServerUrl"];
+        private readonly string weatherHourTableName = ConfigurationManager.AppSettings["weatherHourTable"];
 
         private delegate void InvokeCallback(RichTextBox rtb, string msg, ColorEnum color = ColorEnum.Green);
 
@@ -154,8 +158,6 @@ namespace MonitorDataSys
         /// <param name="e"></param>
         private void btn_Start_Click(object sender, EventArgs e)
         {
-            //AAA();
-
             #region 测试用例
             //Task.Run(() =>
             //{
@@ -311,6 +313,12 @@ namespace MonitorDataSys
             #endregion
             try
             {
+                //Stream s = ZipHelper.FileToStream("E:/万维/Code/rublish/202012210800-wind-surface-level-gfs-0.25.json");
+                //byte[] s1 = ZipHelper.StreamToBytes(s);
+                //string str = ZipHelper.DeflateAndEncodeBase64(s1);
+                //ZipHelper.GZipDeCompress(s, s1);
+                //Stream s2 = ZipHelper.Inflate(s);
+                //ZipHelper.StreamToFile(s2, "E:/万维/Code/rublish/gfs.json");
                 setControlStatus(false);
                 for (int i = 0; i < richLogs.Count; i++)
                 {
@@ -407,19 +415,33 @@ namespace MonitorDataSys
             DateTime startTime = DateTime.Parse("2020-01-01 00:00:00");
             DateTime endTime = DateTime.Parse("2020-01-05 00:00:00");
             EnvCnemcPublishDomainContext publishCtx = new EnvCnemcPublishDomainContext(XAP_URL);
+
+            //城市日均
             //EntityQuery<CityDayAQIPublishHistory> cityAQILiveData = publishCtx.GetCityDayAQIPublishHistoriesQuery()
             //                                               .Where(x => x.Area == "兰州市")
             //                                               .Where(x => x.TimePoint >= startTime && x.TimePoint <= endTime)
-            //                                               .OrderBy(x => x.TimePoint); ;
-
+            //                                               .OrderBy(x => x.TimePoint);
             //IEnumerable<CityDayAQIPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(cityAQILiveData).ResultAsync();
 
-            EntityQuery<IAQIDataPublishHistory> cityAQILiveData = publishCtx.GetIAQIDataPublishHistoriesQuery()
-                                                           .Where(x => x.Area == "兰州市")
-                                                           .Where(x => x.TimePoint >= startTime && x.TimePoint <= endTime)
-                                                           .OrderBy(x => x.TimePoint); ;
-            IEnumerable<IAQIDataPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(cityAQILiveData).ResultAsync();
+            //EntityQuery<CityAQIPublishHistory> aa = publishCtx.GetCityAQIPublishHistoriesQuery()
+            //     .Where(x => x.Area == "兰州市")
+            //     .Where(x => x.TimePoint >= startTime && x.TimePoint <= endTime)
+            //     .OrderBy(x => x.TimePoint);
+            //IEnumerable<CityAQIPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(aa).ResultAsync();
 
+            //站点小时
+            //EntityQuery<IAQIDataPublishHistory> cityAQILiveData = publishCtx.GetIAQIDataPublishHistoriesQuery()
+            //                                               .Where(x => x.Area == "兰州市")
+            //                                               .Where(x => x.TimePoint >= startTime && x.TimePoint <= endTime)
+            //                                               .OrderBy(x => x.TimePoint); ;
+            //IEnumerable<IAQIDataPublishHistory> stationAQIHistoryDataIEB = await publishCtx.Load(cityAQILiveData).ResultAsync();
+
+
+            //站点日均
+            //EntityQuery<AQIDataPublishHistory> stationAQIHistoryQuery = publishCtx.GetAQIDataPublishHistoriesQuery()
+            //                                              .Where(x => x.Area == cityName)
+            //                                              .Where(x => x.TimePoint >= dayTime && x.TimePoint <= dayTime)
+            //                                              .OrderBy(x => x.TimePoint);
 
         }
 
@@ -479,6 +501,8 @@ namespace MonitorDataSys
                     apr = new AreaPredictionRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                     ppr = new ProvincePredictionRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                     cpr = new CityPredictionRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
+
+                    wshr = new WeatherStationHourRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                 }
             }
             catch (Exception e)
@@ -496,6 +520,7 @@ namespace MonitorDataSys
             richLogs.Add(rtb_Hour_Log);
             richLogs.Add(rtb_Day_Log);
             richLogs.Add(rtb_AreaPrediction_Log);
+            richLogs.Add(rtb_WeatherHour_Log);
         }
 
         /// <summary>
@@ -847,9 +872,9 @@ namespace MonitorDataSys
                 //本次采集数据条数
                 int collectTotal = 0;
 
-                if (this.rtb_Hour_Log != null)
+                if (this.rtb_Day_Log != null)
                 {
-                    this.rtb_Hour_Log.Clear();
+                    this.rtb_Day_Log.Clear();
                 }
                 writeLog(rtb_Day_Log, "开始采集数据", ColorEnum.Blue);
 
@@ -1112,6 +1137,11 @@ namespace MonitorDataSys
                 DateTime collectTime = DateTime.Now;
                 //本次采集数据条数
                 int collectTotal = 0;
+                if (this.rtb_AreaPrediction_Log != null)
+                {
+                    this.rtb_AreaPrediction_Log.Clear();
+                }
+                writeLog(rtb_AreaPrediction_Log, "开始采集数据", ColorEnum.Blue);
 
                 DataTable areaTable = napr.NationAreaInfoQuery();
                 if (areaTable != null && areaTable.Rows.Count > 0)
@@ -1206,7 +1236,11 @@ namespace MonitorDataSys
                 DateTime collectTime = DateTime.Now;
                 //本次采集数据条数
                 int collectTotal = 0;
-
+                if (this.rtb_AreaPrediction_Log != null)
+                {
+                    this.rtb_AreaPrediction_Log.Clear();
+                }
+                writeLog(rtb_AreaPrediction_Log, "开始采集数据", ColorEnum.Blue);
                 //调用这个接口 
                 string provinceUrl = provincePredictionUrl;//  预报未来3天的数据
                 string resultProvinceStr = SendHelper.SendPost(provinceUrl);
@@ -1279,7 +1313,11 @@ namespace MonitorDataSys
                 DateTime collectTime = DateTime.Now;
                 //本次采集数据条数
                 int collectTotal = 0;
-
+                if (this.rtb_AreaPrediction_Log != null)
+                {
+                    this.rtb_AreaPrediction_Log.Clear();
+                }
+                writeLog(rtb_AreaPrediction_Log, "开始采集数据", ColorEnum.Blue);
                 //预报未来5天的数据
                 WebClient webClient = new WebClient();
                 String url = cityPredictionUrl + "?_=" + new DateTime().Millisecond;//1565404428085
@@ -1295,14 +1333,14 @@ namespace MonitorDataSys
                     List<CityPrediction> cityList = JsonConvert.DeserializeObject<List<CityPrediction>>(cityData);
                     for (int i = 0; i < cityList.Count; i++)
                     {
-                        bool isCompeletCollect = false;
+                        DateTime publihsTime = DateTime.Now;
+                        if (publihsTime.Hour >= 15)
+                        {
+                            publihsTime = publihsTime.AddDays(1);
+                        }
+                        bool isCompeletCollect = cpr.IsCompeletCollect(cityPredictionTableName, cityList[i].CityCode, DateTime.Parse(publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00")), DateTime.Parse(publihsTime.ToString("yyyy-MM-dd 00:00:00.00")));
                         if (!isCompeletCollect)
                         {
-                            DateTime publihsTime = DateTime.Now;
-                            if (publihsTime.Hour >= 15)
-                            {
-                                publihsTime = publihsTime.AddDays(1);
-                            }
                             JObject item1 = new JObject();
                             item1["PUBLISH_TIME"] = publihsTime.AddDays(-1).ToString("yyyy-MM-dd 00:00:00.00");
                             item1["REGION_CODE"] = cityList[i].CityCode;
@@ -1411,6 +1449,97 @@ namespace MonitorDataSys
             {
                 //日志处理
                 Loghelper.WriteErrorLog("采集国家城市预报数据异常", e);
+                lr.AddLogInfo(e.ToString(), "", "", "Error");
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// 采集中央气象台小时数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task collectHourWeatherDataTool()
+        {
+            #region 气象小数
+            try
+            {
+                //本次集采时间
+                DateTime collectTime = DateTime.Now;
+                string dateStr = collectTime.ToString("yyyyMMddHH");
+                DateTime monitorTime = DateTime.Parse(collectTime.ToString("yyyy-MM-dd HH:00:00"));
+                //本次采集数据条数
+                int collectTotal = 0;
+                if (this.rtb_WeatherHour_Log != null)
+                {
+                    this.rtb_WeatherHour_Log.Clear();
+                }
+                DataTable dt = wst.StationInfoQuery();
+                writeLog(rtb_WeatherHour_Log, "开始采集数据", ColorEnum.Blue);
+                List<JObject> list = new List<JObject>();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        string stationCode = dt.Rows[i]["UniqueCode"].ToString();
+                        string cityCode = dt.Rows[i]["CityCode"].ToString();
+                        bool isCompeletCollect = wshr.IsCompeletCollect(weatherHourTableName, stationCode, monitorTime);
+                        if (!isCompeletCollect)
+                        {
+                            string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);
+                            List<JObject> listResult = JsonConvert.DeserializeObject<List<JObject>>(resultStr);
+                            if (listResult != null && listResult.Count > 0)
+                            {
+                                JObject item = new JObject();
+                                item["MONITOR_TIME"] = monitorTime;
+                                item["CITY_CODE"] = cityCode;
+                                item["SITE_CODE"] = stationCode;
+                                item["WIND_SPEED"] = Utility.ConvertValueOrgin(listResult[0]["windSpeed"] != null ? listResult[0]["windSpeed"].ToString() : "");
+                                item["WIND_DIRECT"] = Utility.ConvertValueOrgin(listResult[0]["windDirection"] != null ? listResult[0]["windDirection"].ToString() : "");
+                                item["TEMP"] = Utility.ConvertValueOrgin(listResult[0]["temperature"] != null ? listResult[0]["temperature"].ToString() : "");
+                                item["HUM"] = Utility.ConvertValueOrgin(listResult[0]["humidity"] != null ? listResult[0]["humidity"].ToString() : "");
+                                item["PRES"] = Utility.ConvertValueOrgin(listResult[0]["pressure"] != null ? listResult[0]["pressure"].ToString() : "");
+                                item["RAIN"] = Utility.ConvertValueOrgin(listResult[0]["rain1h"] != null ? listResult[0]["rain1h"].ToString() : "");
+                                list.Add(item);
+                            }
+                        }
+                    }
+                    if (list.Count > 0)
+                    {
+                        bool stationHourInsertResult = wshr.AddDataInfo(weatherHourTableName, list);
+                        if (stationHourInsertResult)
+                        {
+                            collectTotal += list.Count;
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_WeatherHour_Log, "<" + list.Count + "个站点>气象站点数据采集成功，本次采集" + list.Count + "条数据", ColorEnum.Green);
+                            lr.AddLogInfo(list.Count + "个站点，气象站点数据采集成功，本次采集" + list.Count + "条数据", "", weatherHourTableName, "Info");
+                        }
+                        else
+                        {
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_WeatherHour_Log, "<" + list.Count + "个站点>气象站点数据采集失败，应该采集" + list.Count + "条数据", ColorEnum.Red);
+                            lr.AddLogInfo(list.Count + "个站点，气象站点数据采集失败，应该采集" + list.Count + "条数据", "", weatherHourTableName, "Error");
+                        }
+                    }
+                    else
+                    {
+                        //在SQLite表中录入当前采集条数
+                        writeLog(rtb_WeatherHour_Log, "暂无要采集站点小时数据", ColorEnum.Orange);
+                    }
+                }
+                else
+                {
+                    //在SQLite表中录入当前采集条数
+                    writeLog(rtb_WeatherHour_Log, "站点基础数据为空，请先完善基础数据再采集", ColorEnum.Orange);
+                }
+                //保存本次采集信息
+                cst.AddStaticInfo(collectTotal, collectTime);
+                writeLog(rtb_WeatherHour_Log, "本次气象小时数据定时采集完成", ColorEnum.Blue);
+                refreshStaticInfo();
+            }
+            catch (Exception e)
+            {
+                //日志处理
+                Loghelper.WriteErrorLog("采集气象小时数据异常", e);
                 lr.AddLogInfo(e.ToString(), "", "", "Error");
             }
             #endregion

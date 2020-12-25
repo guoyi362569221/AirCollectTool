@@ -121,6 +121,7 @@
     <Compile Include="Repository\bzk\CityMonitorHourRepository.cs" />
     <Compile Include="Repository\bzk\StationMonitorDayRepository.cs" />
     <Compile Include="Repository\bzk\StationMonitorHourRepository.cs" />
+    <Compile Include="Repository\bzk\WeatherStationDayRepository.cs" />
     <Compile Include="Repository\bzk\WeatherStationHourRepository.cs" />
     <Compile Include="Repository\local\AirStationRepository.cs" />
     <Compile Include="Repository\local\AreaRepository.cs" />

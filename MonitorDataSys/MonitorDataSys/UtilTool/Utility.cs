@@ -18,7 +18,7 @@ namespace MonitorDataSys.UtilTool
         public static string ConvertValueOrgin(string value)
         {
             string result = value;
-            if (String.IsNullOrEmpty(value) || value == "—" || value == "-999" || value == "9999.0")
+            if (String.IsNullOrEmpty(value) || value == "—" || value == "-9999" || value == "9999.0" || value == "9999")
             {
                 value = noDataValue;
             }

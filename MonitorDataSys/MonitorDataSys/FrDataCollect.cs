@@ -54,6 +54,8 @@ namespace MonitorDataSys
 
         private WeatherStationHourRepository wshr = null;
         private WeatherStationDayRepository wsdr = null;
+        private WeatherCityHourRepository wchr = null;
+        private WeatherCityDayRepository wcdr = null;
 
         private readonly string hourCity = ConfigurationManager.AppSettings["hourCity"];
         private readonly string hourStation = ConfigurationManager.AppSettings["hourStation"];
@@ -508,6 +510,8 @@ namespace MonitorDataSys
 
                     wshr = new WeatherStationHourRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                     wsdr = new WeatherStationDayRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
+                    wchr = new WeatherCityHourRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
+                    wcdr = new WeatherCityDayRepository(ipStr, portStr, userNameStr, passwordStr, dbTypeStr, dbNameStr);
                 }
             }
             catch (Exception e)
@@ -526,6 +530,7 @@ namespace MonitorDataSys
             richLogs.Add(rtb_Day_Log);
             richLogs.Add(rtb_AreaPrediction_Log);
             richLogs.Add(rtb_WeatherHour_Log);
+            richLogs.Add(rtb_WeatherDay_Log);
         }
 
         /// <summary>
@@ -1515,7 +1520,7 @@ namespace MonitorDataSys
                                 break;
                             case "2":
 
-                                bool isCityCompeletCollect = wshr.IsCompeletCollect(weatherCityHourTableName, stationCode, monitorTime);
+                                bool isCityCompeletCollect = wchr.IsCompeletCollect(weatherCityHourTableName, stationCode, monitorTime);
                                 if (!isCityCompeletCollect)
                                 {
                                     string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);
@@ -1562,7 +1567,7 @@ namespace MonitorDataSys
 
                     if (ciytList.Count > 0)
                     {
-                        bool stationHourInsertResult = wshr.AddDataInfo(weatherCityHourTableName, ciytList);
+                        bool stationHourInsertResult = wchr.AddDataInfo(weatherCityHourTableName, ciytList);
                         if (stationHourInsertResult)
                         {
                             collectTotal += ciytList.Count;
@@ -1612,7 +1617,7 @@ namespace MonitorDataSys
             try
             {
                 //本次集采时间
-                DateTime collectTime = DateTime.Now.AddDays(-1);
+                DateTime collectTime = DateTime.Now.AddDays(-3);
                 string dateStr = collectTime.ToString("yyyyMMdd23");
                 DateTime monitorTime = DateTime.Parse(collectTime.ToString("yyyy-MM-dd 00:00:00"));
                 //本次采集数据条数
@@ -1698,7 +1703,7 @@ namespace MonitorDataSys
                                 }
                                 break;
                             case "2":
-                                bool isCityCompeletCollect = wsdr.IsCompeletCollect(weatherCityDayTableName, stationCode, monitorTime);
+                                bool isCityCompeletCollect = wcdr.IsCompeletCollect(weatherCityDayTableName, cityCode, monitorTime);
                                 if (!isCityCompeletCollect)
                                 {
                                     string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);
@@ -1764,19 +1769,19 @@ namespace MonitorDataSys
                     }
                     if (stationList.Count > 0)
                     {
-                        bool stationDayInsertResult = wsdr.AddDataInfo(weatherCityDayTableName, stationList);
+                        bool stationDayInsertResult = wsdr.AddDataInfo(weatherStationDayTableName, stationList);
                         if (stationDayInsertResult)
                         {
                             collectTotal += stationList.Count;
                             //在SQLite表中录入当前采集条数
                             writeLog(rtb_WeatherDay_Log, "<" + stationList.Count + "个站点>气象站点数据采集成功，本次采集" + stationList.Count + "条数据", ColorEnum.Green);
-                            lr.AddLogInfo(stationList.Count + "个站点，气象站点数据采集成功，本次采集" + stationList.Count + "条数据", "", weatherCityDayTableName, "Info");
+                            lr.AddLogInfo(stationList.Count + "个站点，气象站点数据采集成功，本次采集" + stationList.Count + "条数据", "", weatherStationDayTableName, "Info");
                         }
                         else
                         {
                             //在SQLite表中录入当前采集条数
                             writeLog(rtb_WeatherDay_Log, "<" + stationList.Count + "个站点>气象站点数据采集失败，应该采集" + stationList.Count + "条数据", ColorEnum.Red);
-                            lr.AddLogInfo(stationList.Count + "个站点，气象站点数据采集失败，应该采集" + stationList.Count + "条数据", "", weatherCityDayTableName, "Error");
+                            lr.AddLogInfo(stationList.Count + "个站点，气象站点数据采集失败，应该采集" + stationList.Count + "条数据", "", weatherStationDayTableName, "Error");
                         }
                     }
                     else
@@ -1787,7 +1792,7 @@ namespace MonitorDataSys
 
                     if (cityList.Count > 0)
                     {
-                        bool cityDayInsertResult = wsdr.AddDataInfo(weatherCityDayTableName, cityList);
+                        bool cityDayInsertResult = wcdr.AddDataInfo(weatherCityDayTableName, cityList);
                         if (cityDayInsertResult)
                         {
                             collectTotal += cityList.Count;

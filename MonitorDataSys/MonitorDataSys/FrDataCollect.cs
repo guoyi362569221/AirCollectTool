@@ -1519,8 +1519,7 @@ namespace MonitorDataSys
                                 }
                                 break;
                             case "2":
-
-                                bool isCityCompeletCollect = wchr.IsCompeletCollect(weatherCityHourTableName, stationCode, monitorTime);
+                                bool isCityCompeletCollect = wchr.IsCompeletCollect(weatherCityHourTableName, cityCode, monitorTime);
                                 if (!isCityCompeletCollect)
                                 {
                                     string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);

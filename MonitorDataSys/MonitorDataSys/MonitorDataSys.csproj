@@ -132,6 +132,7 @@
     <Compile Include="Repository\local\LogRepository.cs" />
     <Compile Include="Repository\local\NationAreaPreditionRepository.cs" />
     <Compile Include="Repository\local\WeatherStationRepository.cs" />
+    <Compile Include="UtilTool\AQICalculateHelper.cs" />
     <Compile Include="UtilTool\DataConvert\HcDataConvert.cs" />
     <Compile Include="UtilTool\DataConvert\JkDataConvert.cs" />
     <Compile Include="UtilTool\DBHelper.cs" />

@@ -161,22 +161,18 @@ namespace MonitorDataSys
                 {
                     if (asr.DeleteAirStationInfo())
                     {
-                        _ = Task.Run(() =>
-                          {
-                              bool result = asr.AddAirStationInfo(list);
-                              load_lb.Visible = false;
-                              if (result)
-                              {
-                                  stationQueryBtn_Click(null, null);
-                                  MessageBox.Show(cityName + list.Count + "个空气质量站点同步成功！", " 提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                              }
-                              else
-                              {
-                                  MessageBox.Show(cityName + "空气质量站点同步失败！", " 提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                              }
-                          });
+                        bool result = asr.AddAirStationInfo(list);
+                        load_lb.Visible = false;
+                        if (result)
+                        {
+                            stationQueryBtn_Click(null, null);
+                            MessageBox.Show(cityName + list.Count + "个空气质量站点同步成功！", " 提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show(cityName + "空气质量站点同步失败！", " 提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-
                 }
                 else
                 {

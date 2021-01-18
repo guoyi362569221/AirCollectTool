@@ -83,6 +83,8 @@ namespace MonitorDataSys
         private readonly string weatherCityHourTableName = ConfigurationManager.AppSettings["weatherCityHourTable"];
         private readonly string weatherCityDayTableName = ConfigurationManager.AppSettings["weatherCityDayTable"];
 
+        private readonly string provinceCalcCitys = ConfigurationManager.AppSettings["provinceCalcCitys"];
+
         private delegate void InvokeCallback(RichTextBox rtb, string msg, ColorEnum color = ColorEnum.Green);
 
         private List<RichTextBox> richLogs = new List<RichTextBox>();
@@ -652,21 +654,23 @@ namespace MonitorDataSys
                                                         item[hourCityTableFiledDic["MONITORTIME"]] = cityAQILiveDataList[j].TimePoint;
                                                         item[hourCityTableFiledDic["CITYCODE"]] = cityAQILiveDataList[j].CityCode;
                                                         item[hourCityTableFiledDic["SO2_1H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].SO2);
-                                                        item[hourCityTableFiledDic["SO2_1H_IAQI"]] = noDataValue;
                                                         item[hourCityTableFiledDic["NO2_1H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].NO2);
-                                                        item[hourCityTableFiledDic["NO2_1H_IAQI"]] = noDataValue;
                                                         item[hourCityTableFiledDic["PM10_1H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM10);
-                                                        item[hourCityTableFiledDic["PM10_1H_IAQI"]] = noDataValue;
                                                         item[hourCityTableFiledDic["CO_1H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].CO);
-                                                        item[hourCityTableFiledDic["CO_1H_IAQI"]] = noDataValue;
                                                         item[hourCityTableFiledDic["O3_1H_MAX"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].O3);
-                                                        item[hourCityTableFiledDic["O3_1H_MAX_IAQI"]] = noDataValue;
                                                         item[hourCityTableFiledDic["PM25_1H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM2_5);
-                                                        item[hourCityTableFiledDic["PM25_1H_IAQI"]] = noDataValue;
                                                         item[hourCityTableFiledDic["AQI"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].AQI);
                                                         item[hourCityTableFiledDic["PRIMARY_POLLUTANT"]] = cityAQILiveDataList[j].PrimaryPollutant;
                                                         item[hourCityTableFiledDic["AQI_LEVEL"]] = Utility.AQILevelCovertInt(cityAQILiveDataList[j].Quality);
+                                                        item[hourCityTableFiledDic["COMPINDEX"]] = AQICalculateHelper.CalcuCompIndex(cityAQILiveDataList[j].PM2_5, cityAQILiveDataList[j].PM10, cityAQILiveDataList[j].SO2, cityAQILiveDataList[j].NO2, cityAQILiveDataList[j].CO, cityAQILiveDataList[j].O3);
                                                         item["TYPE"] = 0;
+                                                        JObject resultObj = AQICalculateHelper.CalcuAQI(Utility.ConvertValueOrgin(cityAQILiveDataList[j].SO2), Utility.ConvertValueOrgin(cityAQILiveDataList[j].NO2), Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM10), Utility.ConvertValueOrgin(cityAQILiveDataList[j].CO), Utility.ConvertValueOrgin(cityAQILiveDataList[j].O3), Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM2_5), "hour");
+                                                        item[hourCityTableFiledDic["SO2_1H_IAQI"]] = resultObj["so2_iaqi"];
+                                                        item[hourCityTableFiledDic["NO2_1H_IAQI"]] = resultObj["no2_iaqi"];
+                                                        item[hourCityTableFiledDic["PM10_1H_IAQI"]] = resultObj["pm10_iaqi"];
+                                                        item[hourCityTableFiledDic["CO_1H_IAQI"]] = resultObj["co_iaqi"];
+                                                        item[hourCityTableFiledDic["O3_1H_MAX_IAQI"]] = resultObj["o3_iaqi"];
+                                                        item[hourCityTableFiledDic["PM25_1H_IAQI"]] = resultObj["pm25_iaqi"];
                                                         if (!String.IsNullOrEmpty(hourCityTableFiledDic["MEASURE"].ToString()))
                                                         {
                                                             item[hourCityTableFiledDic["MEASURE"]] = cityAQILiveDataList[j].Measure;
@@ -791,6 +795,7 @@ namespace MonitorDataSys
                                                     item[hourStationTableFiledDic["AQI"]] = Utility.ConvertValueOrgin(stationAQILiveData[j].AQI);
                                                     item[hourStationTableFiledDic["PRIMARY_POLLUTANT"]] = stationAQILiveData[j].PrimaryPollutant;
                                                     item[hourStationTableFiledDic["AQI_LEVEL"]] = Utility.AQILevelCovertInt(stationAQILiveData[j].Quality);
+                                                    item[hourStationTableFiledDic["COMPINDEX"]] = AQICalculateHelper.CalcuCompIndex(stationAQILiveData[j].PM2_5, stationAQILiveData[j].PM10, stationAQILiveData[j].SO2, stationAQILiveData[j].NO2, stationAQILiveData[j].CO, stationAQILiveData[j].O3);
                                                     item["TYPE"] = 0;
                                                     if (!String.IsNullOrEmpty(hourStationTableFiledDic["MEASURE"].ToString()))
                                                     {
@@ -926,25 +931,28 @@ namespace MonitorDataSys
                                                         item[dayCityTableFiledDic["MONITORTIME"]] = cityAQILiveDataList[j].TimePoint;
                                                         item[dayCityTableFiledDic["CITYCODE"]] = cityAQILiveDataList[j].CityCode;
                                                         item[dayCityTableFiledDic["SO2_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].SO2_24h);
-                                                        item[dayCityTableFiledDic["SO2_24H_IAQI"]] = noDataValue;
                                                         item[dayCityTableFiledDic["NO2_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].NO2_24h);
-                                                        item[dayCityTableFiledDic["NO2_24H_IAQI"]] = noDataValue;
                                                         item[dayCityTableFiledDic["PM10_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM10_24h);
-                                                        item[dayCityTableFiledDic["PM10_24H_IAQI"]] = noDataValue;
                                                         item[dayCityTableFiledDic["CO_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].CO_24h);
-                                                        item[dayCityTableFiledDic["CO_24H_IAQI"]] = noDataValue;
                                                         item[dayCityTableFiledDic["O3_8H_MAX"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].O3_8h_24h);
-                                                        item[dayCityTableFiledDic["O3_8H_MAX_IAQI"]] = noDataValue;
                                                         item[dayCityTableFiledDic["PM25_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM2_5_24h);
-                                                        item[dayCityTableFiledDic["PM25_24H_IAQI"]] = noDataValue;
                                                         item[dayCityTableFiledDic["AQI"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].AQI);
                                                         item[dayCityTableFiledDic["PRIMARY_POLLUTANT"]] = cityAQILiveDataList[j].PrimaryPollutant;
                                                         item[dayCityTableFiledDic["AQI_LEVEL"]] = Utility.AQILevelCovertInt(cityAQILiveDataList[j].Quality);
+                                                        item[dayCityTableFiledDic["COMPINDEX"]] = AQICalculateHelper.CalcuCompIndex(cityAQILiveDataList[j].PM2_5_24h, cityAQILiveDataList[j].PM10_24h, cityAQILiveDataList[j].SO2_24h, cityAQILiveDataList[j].NO2_24h, cityAQILiveDataList[j].CO_24h, cityAQILiveDataList[j].O3_8h_24h);
                                                         item["TYPE"] = 0;
-                                                        if (!String.IsNullOrEmpty(dayCityTableFiledDic["MEASURE"].ToString()))
-                                                        {
-                                                            item[dayCityTableFiledDic["MEASURE"]] = cityAQILiveDataList[j].Measure;
-                                                        }
+                                                        JObject resultObj = AQICalculateHelper.CalcuAQI(Utility.ConvertValueOrgin(cityAQILiveDataList[j].SO2_24h), Utility.ConvertValueOrgin(cityAQILiveDataList[j].NO2_24h), Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM10_24h), Utility.ConvertValueOrgin(cityAQILiveDataList[j].CO_24h), Utility.ConvertValueOrgin(cityAQILiveDataList[j].O3_8h_24h), Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM2_5_24h), "day");
+                                                        item[dayCityTableFiledDic["SO2_24H_IAQI"]] = resultObj["so2_iaqi"];
+                                                        item[dayCityTableFiledDic["NO2_24H_IAQI"]] = resultObj["no2_iaqi"];
+                                                        item[dayCityTableFiledDic["PM10_24H_IAQI"]] = resultObj["pm10_iaqi"];
+                                                        item[dayCityTableFiledDic["CO_24H_IAQI"]] = resultObj["co_iaqi"];
+                                                        item[dayCityTableFiledDic["O3_8H_MAX_IAQI"]] = resultObj["o3_iaqi"];
+                                                        item[dayCityTableFiledDic["PM25_24H_IAQI"]] = resultObj["pm25_iaqi"];
+                                                        if (!String.IsNullOrEmpty(hourCityTableFiledDic["MEASURE"].ToString()))
+                                                            if (!String.IsNullOrEmpty(dayCityTableFiledDic["MEASURE"].ToString()))
+                                                            {
+                                                                item[dayCityTableFiledDic["MEASURE"]] = cityAQILiveDataList[j].Measure;
+                                                            }
                                                         listCityDay.Add(item);
                                                     }
                                                 }
@@ -1070,6 +1078,7 @@ namespace MonitorDataSys
                                                             item[dayStationTableFiledDic["AQI"]] = Utility.ConvertValueOrgin(stationAQIHistoryDataList[j].AQI);
                                                             item[dayStationTableFiledDic["PRIMARY_POLLUTANT"]] = stationAQIHistoryDataList[j].PrimaryPollutant;
                                                             item[dayStationTableFiledDic["AQI_LEVEL"]] = Utility.AQILevelCovertInt(stationAQIHistoryDataList[j].Quality);
+                                                            item[dayStationTableFiledDic["COMPINDEX"]] = AQICalculateHelper.CalcuCompIndex(stationAQIHistoryDataList[j].PM2_5_24h, stationAQIHistoryDataList[j].PM10_24h, stationAQIHistoryDataList[j].SO2_24h, stationAQIHistoryDataList[j].NO2_24h, stationAQIHistoryDataList[j].CO_24h, stationAQIHistoryDataList[j].O3_8h_24h);
                                                             item["TYPE"] = 0;
                                                             if (!String.IsNullOrEmpty(dayStationTableFiledDic["MEASURE"].ToString()))
                                                             {
@@ -1122,6 +1131,200 @@ namespace MonitorDataSys
                     writeLog(rtb_Day_Log, "请先进性站点同步,然后进行站点日均数据采集", ColorEnum.Orange);
                 }
                 #endregion
+                //保存本次采集信息
+                cst.AddStaticInfo(collectTotal, collectTime);
+                writeLog(rtb_Day_Log, "本次日均定时采集完成", ColorEnum.Blue);
+                refreshStaticInfo();
+            }
+            catch (Exception ex)
+            {
+                //日志处理
+                Loghelper.WriteErrorLog("数据采集异常", ex);
+                lr.AddLogInfo(ex.ToString(), "", "", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 日均省份数据采集总入口
+        /// </summary>
+        /// <returns></returns>
+        public async Task collectDayProvinceDataTool()
+        {
+            //1.读取城市基本信息
+            //2.读取站点基本信息
+            //3.通过城市编号查询城市小时数据，并且通过查询到的城市小时数据中的时间和城市编码去对应的城市小时表中判断是否已经有数据，如果有数据则跳过这次采集，如果没有数据则进行采集
+            //4.通过站点编号查询站点小时数据，并且通过查询到的站点小时数据中的时间和站点编码去对应的站点小时表中判断是否已经有数据，如果有数据则跳过这次采集，如果没有数据则进行采集
+            //5.采集完后需要把采集结果记录在表中，并且在页面上进行展示
+            try
+            {
+                //本次集采时间
+                DateTime collectTime = DateTime.Now;
+                //本次采集数据条数
+                int collectTotal = 0;
+
+                if (this.rtb_Day_Log != null)
+                {
+                    this.rtb_Day_Log.Clear();
+                }
+                writeLog(rtb_Day_Log, "开始采集数据", ColorEnum.Blue);
+
+                //创建domain客户端
+                EnvCnemcPublishDomainContext publishCtx = new EnvCnemcPublishDomainContext(XAP_URL);
+
+                DataTable cityTable = asr.AirAreaInfoQuery(provinceCalcCitys);
+                DateTime monitorTime = new DateTime();
+                #region 城市日均采集
+                if (cityTable != null && cityTable.Rows.Count > 0)
+                {
+                    List<JObject> listCityDay = new List<JObject>();
+                    List<double> so2List = new List<double>();
+                    List<double> no2List = new List<double>();
+                    List<double> pm10List = new List<double>();
+                    List<double> coList = new List<double>();
+                    List<double> o3List = new List<double>();
+                    List<double> pm25List = new List<double>();
+                    for (int i = 0; i < cityTable.Rows.Count; i++)
+                    {
+                        string cityCode = cityTable.Rows[i]["CityCode"].ToString();
+                        string cityName = cityTable.Rows[i]["Area"].ToString();
+                        if (!String.IsNullOrEmpty(cityCode))
+                        {
+                            try
+                            {
+                                EntityQuery<CityDayAQIPublishLive> cityAQILiveData = publishCtx.GetCityDayAQIModelByCitycodeQuery(Int32.Parse(cityCode));
+                                if (cityAQILiveData != null)
+                                {
+                                    IEnumerable<CityDayAQIPublishLive> cityAQILiveDataIEB = await publishCtx.Load(cityAQILiveData).ResultAsync();
+                                    if (cityAQILiveDataIEB != null)
+                                    {
+                                        List<CityDayAQIPublishLive> cityAQILiveDataList = cityAQILiveDataIEB.ToList();
+                                        if (cityAQILiveDataList != null)
+                                        {
+                                            for (int j = 0; j < cityAQILiveDataList.Count; j++)
+                                            {
+                                                if (!String.IsNullOrEmpty(cityAQILiveDataList[j].AQI) && cityAQILiveDataList[j].AQI != "—")
+                                                {
+                                                    monitorTime = cityAQILiveDataList[j].TimePoint;
+                                                    JObject item = new JObject();
+                                                    item[dayCityTableFiledDic["SO2_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].SO2_24h);
+                                                    item[dayCityTableFiledDic["NO2_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].NO2_24h);
+                                                    item[dayCityTableFiledDic["PM10_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM10_24h);
+                                                    item[dayCityTableFiledDic["CO_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].CO_24h);
+                                                    item[dayCityTableFiledDic["O3_8H_MAX"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].O3_8h_24h);
+                                                    item[dayCityTableFiledDic["PM25_24H"]] = Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM2_5_24h);
+                                                    if (Utility.ConvertValueOrgin(cityAQILiveDataList[j].SO2_24h) != noDataValue)
+                                                    {
+                                                        so2List.Add(Double.Parse(cityAQILiveDataList[j].SO2_24h));
+                                                    }
+                                                    if (Utility.ConvertValueOrgin(cityAQILiveDataList[j].NO2_24h) != noDataValue)
+                                                    {
+                                                        no2List.Add(Double.Parse(cityAQILiveDataList[j].NO2_24h));
+                                                    }
+                                                    if (Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM10_24h) != noDataValue)
+                                                    {
+                                                        pm10List.Add(Double.Parse(cityAQILiveDataList[j].PM10_24h));
+                                                    }
+                                                    if (Utility.ConvertValueOrgin(cityAQILiveDataList[j].CO_24h) != noDataValue)
+                                                    {
+                                                        coList.Add(Double.Parse(cityAQILiveDataList[j].CO_24h));
+                                                    }
+                                                    if (Utility.ConvertValueOrgin(cityAQILiveDataList[j].O3_8h_24h) != noDataValue)
+                                                    {
+                                                        o3List.Add(Double.Parse(cityAQILiveDataList[j].O3_8h_24h));
+                                                    }
+                                                    if (Utility.ConvertValueOrgin(cityAQILiveDataList[j].PM2_5_24h) != noDataValue)
+                                                    {
+                                                        pm25List.Add(Double.Parse(cityAQILiveDataList[j].PM2_5_24h));
+                                                    }
+                                                    listCityDay.Add(item);
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex2)
+                            {
+                                //日志处理
+                                Loghelper.WriteErrorLog(cityName + "日均数据采集异常", ex2);
+                                lr.AddLogInfo(cityName + "日均数据采集异常", "", dayCity, "Error");
+                            }
+                        }
+                    }
+                    if (listCityDay.Count > 0 && cityTable != null && listCityDay.Count >= 14)
+                    {
+                        string provinceCode = provinceCalcCitys + "0000";
+                        bool isCompeletCollect = cmdr.IsCompeletCollect(dayCity, provinceCode, monitorTime);
+                        if (!isCompeletCollect)
+                        {
+                            string so2Result = Decimal.Round(Decimal.Parse(so2List.Average().ToString()), 1).ToString();
+                            string no2Result = Decimal.Round(Decimal.Parse(no2List.Average().ToString()), 1).ToString();
+                            string pm10Result = Decimal.Round(Decimal.Parse(pm10List.Average().ToString()), 1).ToString();
+                            string coResult = Decimal.Round(Decimal.Parse(coList.Average().ToString()), 1).ToString();
+                            string o3Result = Decimal.Round(Decimal.Parse(o3List.Average().ToString()), 1).ToString();
+                            string pm25Result = Decimal.Round(Decimal.Parse(pm25List.Average().ToString()), 1).ToString();
+
+                            JObject resultObj = AQICalculateHelper.CalcuAQI(so2Result, no2Result, pm10Result, coResult, o3Result, pm25Result, "day");
+
+                            JObject item = new JObject();
+                            item[dayCityTableFiledDic["MONITORTIME"]] = monitorTime;
+                            item[dayCityTableFiledDic["CITYCODE"]] = provinceCalcCitys + "0000";
+                            item[dayCityTableFiledDic["SO2_24H"]] = so2Result;
+                            item[dayCityTableFiledDic["SO2_24H_IAQI"]] = resultObj["so2_iaqi"];
+                            item[dayCityTableFiledDic["NO2_24H"]] = no2Result;
+                            item[dayCityTableFiledDic["NO2_24H_IAQI"]] = resultObj["no2_iaqi"];
+                            item[dayCityTableFiledDic["PM10_24H"]] = pm10Result;
+                            item[dayCityTableFiledDic["PM10_24H_IAQI"]] = resultObj["pm10_iaqi"];
+                            item[dayCityTableFiledDic["CO_24H"]] = coResult;
+                            item[dayCityTableFiledDic["CO_24H_IAQI"]] = resultObj["co_iaqi"];
+                            item[dayCityTableFiledDic["O3_8H_MAX"]] = o3Result;
+                            item[dayCityTableFiledDic["O3_8H_MAX_IAQI"]] = resultObj["o3_iaqi"];
+                            item[dayCityTableFiledDic["PM25_24H"]] = pm25Result;
+                            item[dayCityTableFiledDic["PM25_24H_IAQI"]] = resultObj["pm25_iaqi"];
+                            item[dayCityTableFiledDic["AQI"]] = Utility.ConvertValueOrgin(resultObj["aqi"].ToString());
+                            item[dayCityTableFiledDic["PRIMARY_POLLUTANT"]] = resultObj["primary_pollutant"];
+                            item[dayCityTableFiledDic["AQI_LEVEL"]] = Utility.AQILevelCovertInt(resultObj["aqi_level"].ToString());
+                            item[dayCityTableFiledDic["COMPINDEX"]] = AQICalculateHelper.CalcuCompIndex(pm25Result, pm10Result, so2Result, no2Result, coResult, o3Result);
+                            item["TYPE"] = 0;
+
+                            List<JObject> listProvinceDay = new List<JObject>();
+                            listProvinceDay.Add(item);
+
+                            bool cityDayInsertResult = cmdr.AddDataInfo(dayCity, listProvinceDay);
+                            if (cityDayInsertResult)
+                            {
+                                collectTotal += listProvinceDay.Count;
+                                //在SQLite表中录入当前采集条数
+                                writeLog(rtb_Day_Log, "省级数据采集成功，本次采集" + listProvinceDay.Count + "条数据", ColorEnum.Green);
+                                lr.AddLogInfo("省级数据采集成功，本次采集" + listProvinceDay.Count + "条数据", "", dayCity, "Info");
+                            }
+                            else
+                            {
+                                //在SQLite表中录入当前采集条数
+                                writeLog(rtb_Day_Log, "省级数据采集失败，应该采集" + listProvinceDay.Count + "条数据", ColorEnum.Red);
+                                lr.AddLogInfo("省级数据采集失败，应该采集" + listProvinceDay.Count + "条数据", "", hourCity, "Error");
+                            }
+                        }
+                        else
+                        {
+                            //在SQLite表中录入当前采集条数
+                            writeLog(rtb_Day_Log, "省级暂无要采集日均数据", ColorEnum.Orange);
+                        }
+                    }
+                    else
+                    {
+                        //在SQLite表中录入当前采集条数
+                        writeLog(rtb_Day_Log, "省级暂无要采集日均数据", ColorEnum.Orange);
+                    }
+                }
+                else
+                {
+                    //请先进性站点同步
+                    writeLog(rtb_Day_Log, "请先进性站点同步,然后进行城市日均数据采集", ColorEnum.Orange);
+                }
+                #endregion
+
                 //保存本次采集信息
                 cst.AddStaticInfo(collectTotal, collectTime);
                 writeLog(rtb_Day_Log, "本次日均定时采集完成", ColorEnum.Blue);
@@ -1616,7 +1819,7 @@ namespace MonitorDataSys
             try
             {
                 //本次集采时间
-                DateTime collectTime = DateTime.Now.AddDays(-3);
+                DateTime collectTime = DateTime.Now.AddDays(-1);
                 string dateStr = collectTime.ToString("yyyyMMdd23");
                 DateTime monitorTime = DateTime.Parse(collectTime.ToString("yyyy-MM-dd 00:00:00"));
                 //本次采集数据条数
@@ -1786,7 +1989,7 @@ namespace MonitorDataSys
                     else
                     {
                         //在SQLite表中录入当前采集条数
-                        writeLog(rtb_WeatherDay_Log, "暂无要采集站点小时数据", ColorEnum.Orange);
+                        writeLog(rtb_WeatherDay_Log, "暂无要采集站点日均数据", ColorEnum.Orange);
                     }
 
                     if (cityList.Count > 0)
@@ -1825,7 +2028,7 @@ namespace MonitorDataSys
             catch (Exception e)
             {
                 //日志处理
-                Loghelper.WriteErrorLog("采集气象小时数据异常", e);
+                Loghelper.WriteErrorLog("采集气象日均数据异常", e);
                 lr.AddLogInfo(e.ToString(), "", "", "Error");
             }
             #endregion

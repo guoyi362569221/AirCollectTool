@@ -162,7 +162,7 @@ namespace MonitorDataSys.Repository.local
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
             }
             catch (Exception e)
@@ -189,10 +189,7 @@ namespace MonitorDataSys.Repository.local
 
                 SQLiteConnection conn = SQLiteHelper.GetConnection(dataBaseName);
                 int count = SQLiteHelper.ExecuteNonQuery(conn, sb.ToString(), null);
-                if (count > 0)
-                {
-                    result = true;
-                }
+                result = true;
             }
             catch (Exception e)
             {

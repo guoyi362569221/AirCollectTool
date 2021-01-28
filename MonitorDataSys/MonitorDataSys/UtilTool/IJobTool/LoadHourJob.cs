@@ -25,7 +25,7 @@ namespace MonitorDataSys.UtilTool.IJobTool
                     //1.绑定需要执行的操作方法
                     //var act = new Action(FrDataCollect.frDataCollect.collectHourDataTool);
                     //act.BeginInvoke(ar => act.EndInvoke(ar), null);  //参数null可以作为回调函数的返回参数
-                    //await FrDataCollect.frDataCollect.collectHourDataTool();
+                    await FrDataCollect.frDataCollect.collectHourDataTool();
                 }
                 catch (Exception e)
                 {

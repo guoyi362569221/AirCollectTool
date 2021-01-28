@@ -392,6 +392,32 @@ namespace MonitorDataSys
                 dictionary.Add(dayJob, dayTriggerList);
                 #endregion
 
+                #region 气象小时数据定时器
+                Quartz.Collection.ISet<ITrigger> hourWeatherTriggerList = new Quartz.Collection.HashSet<ITrigger>();
+                IJobDetail hourWeatherJob = JobBuilder.Create<LoadWeatherHourJob>().WithIdentity("hourWeatherJob", groupName).UsingJobData("key", "value").Build();
+                ITrigger hourWeatherTrigger = TriggerBuilder.Create()
+                                            .WithIdentity("hourWeatherTiger", groupName)
+                                            .StartNow()
+                                            .WithCronSchedule("0 0/" + nuD_min_Hour.Value + " * * * ?")
+                                            //.WithCronSchedule("0 0/5 * * * ?")
+                                            .Build();
+                hourWeatherTriggerList.Add(hourWeatherTrigger);
+                dictionary.Add(hourWeatherJob, hourWeatherTriggerList);
+                #endregion
+
+                #region 气象日均数据定时器
+                Quartz.Collection.ISet<ITrigger> dayWeatherTriggerList = new Quartz.Collection.HashSet<ITrigger>();
+                IJobDetail dayWeatherJob = JobBuilder.Create<LoadWeatherDayJob>().WithIdentity("dayWeatherJob", groupName).UsingJobData("key", "value").Build();
+                ITrigger dayWeatherTrigger = TriggerBuilder.Create()
+                                            .WithIdentity("dayWeatherTiger", groupName)
+                                            .StartNow()
+                                             .WithCronSchedule("0 0 0/" + nuD_day_Day.Value + " * * ? *")
+                                            //.WithCronSchedule("0 0/" + nuD_day_Day.Value + " * * * ?")
+                                            .Build();
+                dayWeatherTriggerList.Add(dayWeatherTrigger);
+                dictionary.Add(dayWeatherJob, dayWeatherTriggerList);
+                #endregion
+
                 #region 国家预报数据定时器
                 Quartz.Collection.ISet<ITrigger> areaPredictionTriggerList = new Quartz.Collection.HashSet<ITrigger>();
                 IJobDetail areaPredictionJob = JobBuilder.Create<LoadAreaPredictionJob>().WithIdentity("areaPredictionJob", groupName).UsingJobData("key", "value").Build();
@@ -1671,7 +1697,7 @@ namespace MonitorDataSys
         /// 采集中央气象台小时数据
         /// </summary>
         /// <returns></returns>
-        public async Task collectHourWeatherDataTool()
+        public void collectHourWeatherDataTool()
         {
             #region 气象小时
             try
@@ -1694,54 +1720,72 @@ namespace MonitorDataSys
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
+                        string stationName = dt.Rows[i]["Area"].ToString();
                         string stationCode = dt.Rows[i]["UniqueCode"].ToString();
                         string cityCode = dt.Rows[i]["CityCode"].ToString();
                         string type = dt.Rows[i]["type"].ToString();
-                        switch (type)
+                        bool isLoadSucess = false;
+                        try
                         {
-                            case "1":
-                                bool isStationCompeletCollect = wshr.IsCompeletCollect(weatherStationHourTableName, stationCode, monitorTime);
-                                if (!isStationCompeletCollect)
-                                {
-                                    string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);
-                                    List<JObject> listResult = JsonConvert.DeserializeObject<List<JObject>>(resultStr);
-                                    if (listResult != null && listResult.Count > 0)
+                            switch (type)
+                            {
+                                case "1":
+                                    bool isStationCompeletCollect = wshr.IsCompeletCollect(weatherStationHourTableName, stationCode, monitorTime);
+                                    if (!isStationCompeletCollect)
                                     {
-                                        JObject item = new JObject();
-                                        item["MONITOR_TIME"] = monitorTime;
-                                        item["CITY_CODE"] = cityCode;
-                                        item["SITE_CODE"] = stationCode;
-                                        item["WIND_SPEED"] = Utility.ConvertValueOrgin(listResult[0]["windSpeed"] != null ? listResult[0]["windSpeed"].ToString() : "");
-                                        item["WIND_DIRECT"] = Utility.ConvertValueOrgin(listResult[0]["windDirection"] != null ? listResult[0]["windDirection"].ToString() : "");
-                                        item["TEMP"] = Utility.ConvertValueOrgin(listResult[0]["temperature"] != null ? listResult[0]["temperature"].ToString() : "");
-                                        item["HUM"] = Utility.ConvertValueOrgin(listResult[0]["humidity"] != null ? listResult[0]["humidity"].ToString() : "");
-                                        item["PRES"] = Utility.ConvertValueOrgin(listResult[0]["pressure"] != null ? listResult[0]["pressure"].ToString() : "");
-                                        item["RAIN"] = Utility.ConvertValueOrgin(listResult[0]["rain1h"] != null ? listResult[0]["rain1h"].ToString() : "");
-                                        stationList.Add(item);
+                                        string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode+"?"+ DateTime.Now.ToString("yyyyMMddHHmmsszzz"));
+                                        List<JObject> listResult = JsonConvert.DeserializeObject<List<JObject>>(resultStr);
+                                        if (listResult != null && listResult.Count > 0)
+                                        {
+                                            JObject item = new JObject();
+                                            item["MONITOR_TIME"] = monitorTime;
+                                            item["CITY_CODE"] = cityCode;
+                                            item["SITE_CODE"] = stationCode;
+                                            item["WIND_SPEED"] = Utility.ConvertValueOrgin(listResult[0]["windSpeed"] != null ? listResult[0]["windSpeed"].ToString() : "");
+                                            item["WIND_DIRECT"] = Utility.ConvertValueOrgin(listResult[0]["windDirection"] != null ? listResult[0]["windDirection"].ToString() : "");
+                                            item["TEMP"] = Utility.ConvertValueOrgin(listResult[0]["temperature"] != null ? listResult[0]["temperature"].ToString() : "");
+                                            item["HUM"] = Utility.ConvertValueOrgin(listResult[0]["humidity"] != null ? listResult[0]["humidity"].ToString() : "");
+                                            item["PRES"] = Utility.ConvertValueOrgin(listResult[0]["pressure"] != null ? listResult[0]["pressure"].ToString() : "");
+                                            item["RAIN"] = Utility.ConvertValueOrgin(listResult[0]["rain1h"] != null ? listResult[0]["rain1h"].ToString() : "");
+                                            stationList.Add(item);
+                                        }
                                     }
-                                }
-                                break;
-                            case "2":
-                                bool isCityCompeletCollect = wchr.IsCompeletCollect(weatherCityHourTableName, cityCode, monitorTime);
-                                if (!isCityCompeletCollect)
-                                {
-                                    string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);
-                                    List<JObject> listResult = JsonConvert.DeserializeObject<List<JObject>>(resultStr);
-                                    if (listResult != null && listResult.Count > 0)
+                                    break;
+                                case "2":
+                                    bool isCityCompeletCollect = wchr.IsCompeletCollect(weatherCityHourTableName, cityCode, monitorTime);
+                                    if (!isCityCompeletCollect)
                                     {
-                                        JObject item = new JObject();
-                                        item["MONITOR_TIME"] = monitorTime;
-                                        item["CITY_CODE"] = cityCode;
-                                        item["WIND_SPEED"] = Utility.ConvertValueOrgin(listResult[0]["windSpeed"] != null ? listResult[0]["windSpeed"].ToString() : "");
-                                        item["WIND_DIRECT"] = Utility.ConvertValueOrgin(listResult[0]["windDirection"] != null ? listResult[0]["windDirection"].ToString() : "");
-                                        item["TEMP"] = Utility.ConvertValueOrgin(listResult[0]["temperature"] != null ? listResult[0]["temperature"].ToString() : "");
-                                        item["HUM"] = Utility.ConvertValueOrgin(listResult[0]["humidity"] != null ? listResult[0]["humidity"].ToString() : "");
-                                        item["PRES"] = Utility.ConvertValueOrgin(listResult[0]["pressure"] != null ? listResult[0]["pressure"].ToString() : "");
-                                        item["RAIN"] = Utility.ConvertValueOrgin(listResult[0]["rain1h"] != null ? listResult[0]["rain1h"].ToString() : "");
-                                        ciytList.Add(item);
+                                        string resultStr = SendHelper.SendPost(weatherServerUrl + dateStr + "/" + stationCode);
+                                        List<JObject> listResult = JsonConvert.DeserializeObject<List<JObject>>(resultStr);
+                                        if (listResult != null && listResult.Count > 0)
+                                        {
+                                            JObject item = new JObject();
+                                            item["MONITOR_TIME"] = monitorTime;
+                                            item["CITY_CODE"] = cityCode;
+                                            item["WIND_SPEED"] = Utility.ConvertValueOrgin(listResult[0]["windSpeed"] != null ? listResult[0]["windSpeed"].ToString() : "");
+                                            item["WIND_DIRECT"] = Utility.ConvertValueOrgin(listResult[0]["windDirection"] != null ? listResult[0]["windDirection"].ToString() : "");
+                                            item["TEMP"] = Utility.ConvertValueOrgin(listResult[0]["temperature"] != null ? listResult[0]["temperature"].ToString() : "");
+                                            item["HUM"] = Utility.ConvertValueOrgin(listResult[0]["humidity"] != null ? listResult[0]["humidity"].ToString() : "");
+                                            item["PRES"] = Utility.ConvertValueOrgin(listResult[0]["pressure"] != null ? listResult[0]["pressure"].ToString() : "");
+                                            item["RAIN"] = Utility.ConvertValueOrgin(listResult[0]["rain1h"] != null ? listResult[0]["rain1h"].ToString() : "");
+                                            ciytList.Add(item);
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                            }
+                            isLoadSucess = true;
+                        }
+                        catch (Exception ex2) 
+                        {
+                            isLoadSucess = false;
+                        }
+                        if (isLoadSucess)
+                        {
+                            writeLog(rtb_WeatherHour_Log, stationName + "(" + stationCode + ")数据已下载，剩" + (dt.Rows.Count - i - 1) + "个站点。", ColorEnum.Green);
+                        }
+                        else
+                        {
+                            writeLog(rtb_WeatherHour_Log, stationCode + "(" + cityCode + ")数据下载失败，剩" + (dt.Rows.Count - i - 1) + "个站点。", ColorEnum.Red);
                         }
                     }
                     if (stationList.Count > 0)
@@ -1813,7 +1857,7 @@ namespace MonitorDataSys
         /// 采集中央气象台日均数据
         /// </summary>
         /// <returns></returns>
-        public async Task collectDayWeatherDataTool()
+        public void collectDayWeatherDataTool()
         {
             #region 气象日均
             try

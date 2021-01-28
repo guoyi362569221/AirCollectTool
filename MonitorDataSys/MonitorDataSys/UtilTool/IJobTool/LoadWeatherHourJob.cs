@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.UtilTool.IJobTool
 {
-    public class LoadHourJob : IJob
+    public class LoadWeatherHourJob : IJob
     {
         private readonly LogRepository lr = new LogRepository();
 
@@ -23,9 +23,8 @@ namespace MonitorDataSys.UtilTool.IJobTool
                     string key = dataMap.GetString("key");//获取参数
 
                     //1.绑定需要执行的操作方法
-                    //var act = new Action(FrDataCollect.frDataCollect.collectHourDataTool);
-                    //act.BeginInvoke(ar => act.EndInvoke(ar), null);  //参数null可以作为回调函数的返回参数
-                    //await FrDataCollect.frDataCollect.collectHourDataTool();
+                    var act = new Action(FrDataCollect.frDataCollect.collectHourWeatherDataTool);
+                    act.BeginInvoke(ar => act.EndInvoke(ar), null);  //参数null可以作为回调函数的返回参数
                 }
                 catch (Exception e)
                 {

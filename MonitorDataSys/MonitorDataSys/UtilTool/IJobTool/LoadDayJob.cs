@@ -27,7 +27,6 @@ namespace MonitorDataSys.UtilTool.IJobTool
                     //act.BeginInvoke(ar => act.EndInvoke(ar), null);  //参数null可以作为回调函数的返回参数
                     await FrDataCollect.frDataCollect.collectDayDataTool();
                     await FrDataCollect.frDataCollect.collectDayProvinceDataTool();
-                    await FrDataCollect.frDataCollect.collectDayWeatherDataTool();
                 }
                 catch (Exception e)
                 {

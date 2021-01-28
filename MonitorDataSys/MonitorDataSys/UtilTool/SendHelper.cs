@@ -108,6 +108,7 @@ namespace MonitorDataSys.UtilTool
             {
                 //发送请求
                 var req = (HttpWebRequest)WebRequest.Create(url);
+                req.CookieContainer = new CookieContainer();
                 req.Timeout = 1000 * 5000;//50分钟
                 var rep = (HttpWebResponse)req.GetResponse();//得到请求结果
                 if (rep.StatusCode == HttpStatusCode.OK)

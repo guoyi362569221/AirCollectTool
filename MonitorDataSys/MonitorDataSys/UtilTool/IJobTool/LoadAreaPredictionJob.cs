@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MonitorDataSys.UtilTool.IJobTool
 {
 
-
+    [DisallowConcurrentExecution]
     /// <summary>
     /// 国家区域预报数据
     /// </summary>

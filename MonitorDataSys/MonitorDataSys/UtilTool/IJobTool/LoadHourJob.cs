@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.UtilTool.IJobTool
 {
+    [DisallowConcurrentExecution]
     public class LoadHourJob : IJob
     {
         private readonly LogRepository lr = new LogRepository();

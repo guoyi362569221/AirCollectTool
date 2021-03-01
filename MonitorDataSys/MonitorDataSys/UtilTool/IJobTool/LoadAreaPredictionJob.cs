@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.UtilTool.IJobTool
 {
-
+    [PersistJobDataAfterExecution]
     [DisallowConcurrentExecution]
     /// <summary>
     /// 国家区域预报数据

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MonitorDataSys.UtilTool.IJobTool
 {
-
+    [PersistJobDataAfterExecution]
     [DisallowConcurrentExecution]
     public class LoadWeatherHourJob : IJob
     {

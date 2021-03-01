@@ -23,6 +23,7 @@ namespace MonitorDataSys.UtilTool
             {
                 //发送请求
                 var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.KeepAlive = false;
                 request.Timeout = 1000 * 5000;//50分钟
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -57,6 +58,7 @@ namespace MonitorDataSys.UtilTool
         public static string SendPostGZIP(string url, string dataStr)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
+            request.KeepAlive = false;
             request.Method = "POST";
             byte[] data = Encoding.UTF8.GetBytes(dataStr);
             request.CookieContainer = new CookieContainer();
@@ -108,6 +110,7 @@ namespace MonitorDataSys.UtilTool
             {
                 //发送请求
                 var req = (HttpWebRequest)WebRequest.Create(url);
+                req.KeepAlive = false;
                 req.CookieContainer = new CookieContainer();
                 //req.Timeout = 1 * 60 * 1000;//5分钟
                 var rep = (HttpWebResponse)req.GetResponse();//得到请求结果
@@ -148,6 +151,7 @@ namespace MonitorDataSys.UtilTool
             {
                 //发送请求
                 var req = (HttpWebRequest)WebRequest.Create(url);
+                req.KeepAlive = false;
                 req.Timeout = 1000 * 5000;//50分钟
                 var rep = (HttpWebResponse)req.GetResponse();//得到请求结果
                 Stream stream = rep.GetResponseStream();
@@ -171,6 +175,7 @@ namespace MonitorDataSys.UtilTool
         public static string SendPost(string url, string dataStr)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
+            request.KeepAlive = false;
             request.Method = "POST";
             byte[] data = Encoding.UTF8.GetBytes(dataStr);
             request.CookieContainer = new CookieContainer();
@@ -219,6 +224,7 @@ namespace MonitorDataSys.UtilTool
         public static string SendPostText(string url, string dataStr)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
+            request.KeepAlive = false;
             request.Method = "POST";
             byte[] data = Encoding.UTF8.GetBytes(dataStr);
             request.CookieContainer = new CookieContainer();
@@ -266,6 +272,7 @@ namespace MonitorDataSys.UtilTool
         public static string SendPostByte(string url, byte[] dataByte, string contentType = "application/x-www-form-urlencoded")
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
+            request.KeepAlive = false;
             request.Method = "POST";
             byte[] data = dataByte;
             request.CookieContainer = new CookieContainer();
